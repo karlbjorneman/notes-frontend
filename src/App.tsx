@@ -3,19 +3,21 @@ import 'typeface-roboto';
 import './App.css';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { withStyles } from '@material-ui/core/styles';
+import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import SampleComponent from './SampleComponent';
 
-const styles = {
+const styles = createStyles ({
   root: {
     backgroundColor: 'red',
     flexGrow: 1,
   },
-};
+});
 
-class App extends React.Component {
-  constructor(props: Readonly<{}>) {
+interface IProps extends WithStyles<typeof styles> {}
+
+class App extends React.Component<IProps> {
+  constructor(props: Readonly<IProps>) {
     super(props);
   }
 
@@ -29,7 +31,9 @@ class App extends React.Component {
               Welcome to Notes
             </Typography>
           </header>
-          <SampleComponent/>
+          <div className={this.props.classes.root}>
+            <SampleComponent/>
+          </div>
         </div>
       </React.Fragment>
     );
