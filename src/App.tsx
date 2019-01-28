@@ -5,7 +5,7 @@ import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import SampleComponent from './SampleComponent';
+import SampleComponent from './Board';
 
 const styles = createStyles ({
   root: {
