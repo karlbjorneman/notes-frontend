@@ -29,13 +29,10 @@ export default class SampleComponent extends React.Component<{}, IBoardState> {
             <DragDropContext onDragEnd={this.onDragEnd}>
 
             {this.state.columnOrder.map(columnId => {
-            const column = this.state.columns[columnId]
-            const tasks = column.taskIds.map(
-                (taskId: string) => this.state.tasks[taskId]
-            )
+                const column = this.state.columns.filter((currColumn:any) => currColumn.id === columnId).pop();
 
-            return (
-              <Column key={column.id} column={column} tasks={tasks} />
+                return (
+                  <Column key={column.id} column={column} />
             )
           })}
             </DragDropContext>

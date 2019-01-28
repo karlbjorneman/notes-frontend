@@ -36,9 +36,9 @@ interface INoteItem {
     position: {column: string}
 }
 
-export default class Column extends React.Component<{column: IColumn, tasks: any}, {error:string, notes:INoteItem[], isLoaded: boolean}> {
+export default class Column extends React.Component<{column: IColumn}, {error:string, notes:INoteItem[], isLoaded: boolean}> {
    
-    constructor(props: {column: IColumn, tasks: any}) {
+    constructor(props: {column: IColumn}) {
         super(props);
 
         this.state = {

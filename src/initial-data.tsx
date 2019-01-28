@@ -2,23 +2,23 @@ const initialData = {
     // Facilitate reordering of the columns
     columnOrder: ['column-1', 'column-2', 'column-3'],
     
-    columns: {
-      'column-1': {
+    columns: [
+      {
         id: 'column-1',
         taskIds: ['task-1', 'task-2', 'task-3', 'task-4'],
         title: 'To do'
       },
-      'column-2': {
+      {
         id: 'column-2',
         taskIds: [],
         title: 'In progress'
       },
-      'column-3': {
+      {
         id: 'column-3',
         taskIds: [],
         title: 'Done'
       }
-    },
+    ],
 
     tasks: {
         'task-1': { id: 'task-1', content: 'Take out the garbage' },
