@@ -1,5 +1,5 @@
 // import Typography from '@material-ui/core/Typography';
-import { Grid, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import * as React from 'react';
 
 interface INoteItemProps {
@@ -32,11 +32,11 @@ export default class Note extends React.Component<INoteItemProps, INoteItemState
 
     public render() {
         return (
-                    <Grid item={true} xs={4}>
+                    <div>
                         <TextField fullWidth={true} value={this.state.header} onChange={this.handleHeaderChange} onBlur={this.handleSubmit}/>
                         <br/>
                         <TextField fullWidth={true} value={this.state.body} multiline={true} onChange={this.handleBodyChange} onBlur={this.handleSubmit}/>
-                    </Grid>
+                    </div>
         )
     }
 
