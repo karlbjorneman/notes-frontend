@@ -5,20 +5,13 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import Column from './Column';
 import initialData from './initial-data'
 
-// fake data generator
-const getItems = (count: number, offset = 0) =>
-    Array.from({ length: count }, (v, k) => k).map(k => ({
-        content: `item ${k + offset}`,
-        id: `item-${k + offset}`
-    }));
-
-interface IItem
-{
-    content: string,
-    id: string
+interface IBoardState {
+    tasks:any, 
+    columns:any, 
+    columnOrder:string[]
 }
 
-export default class SampleComponent extends React.Component<{}, {items:IItem[], selected: IItem[], tasks:any, columns:any, columnOrder:string[]}> {
+export default class SampleComponent extends React.Component<{}, IBoardState> {
 
     constructor (props: {}) {
     super(props);
@@ -26,8 +19,6 @@ export default class SampleComponent extends React.Component<{}, {items:IItem[],
     this.state = {
         columnOrder: initialData.columnOrder,
         columns: initialData.columns,
-        items: getItems(10),
-        selected: getItems(5, 10),
         tasks: initialData.tasks
     };
   }
