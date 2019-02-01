@@ -73,7 +73,7 @@ export default class Board extends React.Component<{}, IBoardState> {
   }
 
   private onDragEnd = (result: { destination: any; source: any; draggableId: any; }) => {
-    const { destination, source, draggableId } = result
+    const { destination, source } = result
 
     if (!destination) {
       return
@@ -90,21 +90,18 @@ export default class Board extends React.Component<{}, IBoardState> {
     const finishColumn = this.state.newColumns.find((column:any) => column.id === destination.droppableId);
 
     if (startColumn === finishColumn) {
-      const newNotesIds = Array.from(startColumn.notes)
-      newNotesIds.splice(source.index, 1)
-      newNotesIds.splice(destination.index, 0, draggableId)
+      const newNotesIds = startColumn.notes
+      const movedNote = newNotesIds.splice(source.index, 1).pop()
+      newNotesIds.splice(destination.index, 0, movedNote)
 
-      const newColumn = {
+      this.state.newColumns[startColumn] = {
         ...startColumn,
-        taskIds: newNotesIds
+        notes: newNotesIds
       }
 
       const updatedState = {
         ...this.state,
-        newColumns: {
-          ...this.state.newColumns,
-          [newColumn.id]: newColumn
-        }
+        newColumns: this.state.newColumns
       }
 
       this.setState(updatedState)
