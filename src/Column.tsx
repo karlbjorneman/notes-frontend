@@ -26,7 +26,8 @@ const getListStyle = (isDraggingOver: any) => ({
 
 interface IColumn {
     id: string,
-    tasks: string[]
+    tasks: string[],
+    notes: any
 }
 
 interface INoteItem {
@@ -36,43 +37,15 @@ interface INoteItem {
     position: {column: string}
 }
 
-export default class Column extends React.Component<{column: IColumn}, {error:string, notes:INoteItem[], isLoaded: boolean}> {
+export default class Column extends React.Component<{column: IColumn}, {notes:INoteItem[]}> {
    
     constructor(props: {column: IColumn}) {
         super(props);
 
         this.state = {
-            error: '',
-            isLoaded: false,
-            notes: []
+            notes: this.props.column.notes
         };
     }
-
-    public componentDidMount () {
-
-        fetch('http://localhost:5001/api/notes')
-        .then(results => {
-            return results.json();
-        })
-        .then(data => {
-            this.setState({
-                isLoaded: true,
-                notes: data
-            })
-        },
-            (error) => {
-                this.setState({
-                  error: error.message,
-                  isLoaded: true
-                });
-              }
-    
-        )
-        .catch(error => { 
-            // tslint:disable-next-line:no-console
-            console.debug(error) ; 
-        } );
-      }
    
     public render() {
         return (

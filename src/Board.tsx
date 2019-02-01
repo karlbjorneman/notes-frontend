@@ -8,7 +8,10 @@ import initialData from './initial-data'
 interface IBoardState {
     tasks:any, 
     columns:any, 
-    columnOrder:string[]
+    newColumns:any,
+    columnOrder:string[],
+    isLoaded: boolean,
+    error:string
 }
 
 export default class SampleComponent extends React.Component<{}, IBoardState> {
@@ -19,8 +22,43 @@ export default class SampleComponent extends React.Component<{}, IBoardState> {
     this.state = {
         columnOrder: initialData.columnOrder,
         columns: initialData.columns,
+        error: '',
+        isLoaded: false,
+        newColumns: [],
         tasks: initialData.tasks
     };
+  }
+
+  public componentDidMount () {
+
+    fetch('http://localhost:5001/api/notes')
+    .then(results => {
+        return results.json();
+    })
+    .then(data => {
+
+        const notes = data;
+        const columnsWithNotes = this.state.columns.map((column:any) => {
+            column.notes = notes.filter((note:any) => note.position.column === column.id);
+            return column;
+        });
+
+        this.setState({
+          isLoaded: true,
+          newColumns: columnsWithNotes
+        });
+    },
+        (error) => {
+            this.setState({
+              error: error.message,
+              isLoaded: true
+            });
+          }
+
+    )
+    .catch(error => { 
+        alert(error);
+    } );
   }
 
   public render () {
@@ -28,9 +66,7 @@ export default class SampleComponent extends React.Component<{}, IBoardState> {
         <Grid container={true} spacing={0}>
             <DragDropContext onDragEnd={this.onDragEnd}>
 
-            {this.state.columnOrder.map(columnId => {
-                const column = this.state.columns.filter((currColumn:any) => currColumn.id === columnId).pop();
-
+            {this.state.newColumns.map((column:any) => {
                 return (
                   <Column key={column.id} column={column} />
             )
@@ -54,23 +90,23 @@ export default class SampleComponent extends React.Component<{}, IBoardState> {
       return
     }
 
-    const start = this.state.columns[source.droppableId]
-    const finish = this.state.columns[destination.droppableId]
+    const startColumn = this.state.newColumns.find((column:any) => column.id === source.droppableId);
+    const finishColumn = this.state.newColumns.find((column:any) => column.id === destination.droppableId);
 
-    if (start === finish) {
-      const newTaskIds = Array.from(start.taskIds)
-      newTaskIds.splice(source.index, 1)
-      newTaskIds.splice(destination.index, 0, draggableId)
+    if (startColumn === finishColumn) {
+      const newNotesIds = Array.from(startColumn.notes)
+      newNotesIds.splice(source.index, 1)
+      newNotesIds.splice(destination.index, 0, draggableId)
 
       const newColumn = {
-        ...start,
-        taskIds: newTaskIds
+        ...startColumn,
+        taskIds: newNotesIds
       }
 
       const updatedState = {
         ...this.state,
-        columns: {
-          ...this.state.columns,
+        newColumns: {
+          ...this.state.newColumns,
           [newColumn.id]: newColumn
         }
       }
@@ -80,27 +116,29 @@ export default class SampleComponent extends React.Component<{}, IBoardState> {
     }
 
     // Moving from one list to another
-    const startTaskIds = Array.from(start.taskIds)
-    startTaskIds.splice(source.index, 1)
+    const startNotes = startColumn.notes
+    const removedNote = startNotes.splice(source.index, 1).pop()
     const newStart = {
-      ...start,
-      taskIds: startTaskIds
+      ...startColumn,
+      notes: startNotes
     }
 
-    const finishTaskIds = Array.from(finish.taskIds)
-    finishTaskIds.splice(destination.index, 0, draggableId)
+    const finishNotes = finishColumn.notes
+    finishNotes.splice(destination.index, 0, removedNote)
     const newFinish = {
-      ...finish,
-      taskIds: finishTaskIds
+      ...finishColumn,
+      notes: finishNotes
     }
+
+    const startIndex = this.state.newColumns.findIndex((p:any) => p.id === newStart.id)
+    const finishIndex = this.state.newColumns.findIndex((p:any) => p.id === newFinish.id)
+
+    this.state.newColumns[startIndex] = newStart;
+    this.state.newColumns[finishIndex] = newFinish;
 
     const newState = {
       ...this.state,
-      columns: {
-        ...this.state.columns,
-        [newStart.id]: newStart,
-        [newFinish.id]: newFinish
-      }
+      newColumns: this.state.newColumns
     }
     this.setState(newState)
     };
