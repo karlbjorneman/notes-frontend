@@ -6,8 +6,7 @@ import Column from './Column';
 import initialData from './initial-data'
 
 interface IBoardState {
-    columns:any, 
-    newColumns:any,
+    columns:any,
     isLoaded: boolean,
     error:string
 }
@@ -18,10 +17,9 @@ export default class Board extends React.Component<{}, IBoardState> {
     super(props);
 
     this.state = {
-        columns: initialData.columns,
+        columns: [],
         error: '',
         isLoaded: false,
-        newColumns: [],
     };
   }
 
@@ -34,14 +32,14 @@ export default class Board extends React.Component<{}, IBoardState> {
     .then(data => {
 
         const notes = data;
-        const columnsWithNotes = this.state.columns.map((column:any) => {
+        const columnsWithNotes = initialData.columns.map((column:any) => {
             column.notes = notes.filter((note:any) => note.position.column === column.id);
             return column;
         });
 
         this.setState({
-          isLoaded: true,
-          newColumns: columnsWithNotes
+          columns: columnsWithNotes,
+          isLoaded: true
         });
     },
         (error) => {
@@ -62,7 +60,7 @@ export default class Board extends React.Component<{}, IBoardState> {
         <Grid container={true} spacing={0}>
             <DragDropContext onDragEnd={this.onDragEnd}>
 
-            {this.state.newColumns.map((column:any) => {
+            {this.state.columns.map((column:any) => {
                 return (
                   <Column key={column.id} column={column} />
             )
@@ -86,22 +84,22 @@ export default class Board extends React.Component<{}, IBoardState> {
       return
     }
 
-    const startColumn = this.state.newColumns.find((column:any) => column.id === source.droppableId);
-    const finishColumn = this.state.newColumns.find((column:any) => column.id === destination.droppableId);
+    const startColumn = this.state.columns.find((column:any) => column.id === source.droppableId);
+    const finishColumn = this.state.columns.find((column:any) => column.id === destination.droppableId);
 
     if (startColumn === finishColumn) {
       const newNotesIds = startColumn.notes
       const movedNote = newNotesIds.splice(source.index, 1).pop()
       newNotesIds.splice(destination.index, 0, movedNote)
 
-      this.state.newColumns[startColumn] = {
+      this.state.columns[startColumn] = {
         ...startColumn,
         notes: newNotesIds
       }
 
       const updatedState = {
         ...this.state,
-        newColumns: this.state.newColumns
+        newColumns: this.state.columns
       }
 
       this.setState(updatedState)
@@ -123,15 +121,15 @@ export default class Board extends React.Component<{}, IBoardState> {
       notes: finishNotes
     }
 
-    const startIndex = this.state.newColumns.findIndex((p:any) => p.id === newStart.id)
-    const finishIndex = this.state.newColumns.findIndex((p:any) => p.id === newFinish.id)
+    const startIndex = this.state.columns.findIndex((p:any) => p.id === newStart.id)
+    const finishIndex = this.state.columns.findIndex((p:any) => p.id === newFinish.id)
 
-    this.state.newColumns[startIndex] = newStart;
-    this.state.newColumns[finishIndex] = newFinish;
+    this.state.columns[startIndex] = newStart;
+    this.state.columns[finishIndex] = newFinish;
 
     const newState = {
       ...this.state,
-      newColumns: this.state.newColumns
+      newColumns: this.state.columns
     }
     this.setState(newState)
     };
