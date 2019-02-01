@@ -14,7 +14,7 @@ interface IBoardState {
     error:string
 }
 
-export default class SampleComponent extends React.Component<{}, IBoardState> {
+export default class Board extends React.Component<{}, IBoardState> {
 
     constructor (props: {}) {
     super(props);

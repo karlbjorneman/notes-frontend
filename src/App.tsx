@@ -5,7 +5,7 @@ import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import SampleComponent from './Board';
+import Board from './Board';
 
 const styles = createStyles ({
   root: {
@@ -32,7 +32,7 @@ class App extends React.Component<IProps> {
             </Typography>
           </header>
           <div className={this.props.classes.root}>
-            <SampleComponent/>
+            <Board/>
           </div>
         </div>
       </React.Fragment>
