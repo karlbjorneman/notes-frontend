@@ -6,10 +6,8 @@ import Column from './Column';
 import initialData from './initial-data'
 
 interface IBoardState {
-    tasks:any, 
     columns:any, 
     newColumns:any,
-    columnOrder:string[],
     isLoaded: boolean,
     error:string
 }
@@ -20,12 +18,10 @@ export default class Board extends React.Component<{}, IBoardState> {
     super(props);
 
     this.state = {
-        columnOrder: initialData.columnOrder,
         columns: initialData.columns,
         error: '',
         isLoaded: false,
         newColumns: [],
-        tasks: initialData.tasks
     };
   }
 
