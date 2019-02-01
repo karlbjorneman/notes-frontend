@@ -1,4 +1,3 @@
-// import Typography from '@material-ui/core/Typography';
 import { TextField } from '@material-ui/core';
 import * as React from 'react';
 
@@ -6,15 +5,18 @@ interface INoteItemProps {
     id: string;
     body?: string;
     header?: string;
+    position: {column: string}
   }
   
 interface INoteItemState {
     id: string;
     body?: string;
     header?: string;
+    position: {column: string}
 }
 
 export default class Note extends React.Component<INoteItemProps, INoteItemState> {
+
 
     constructor(props: INoteItemProps) {
         super(props);
@@ -23,6 +25,7 @@ export default class Note extends React.Component<INoteItemProps, INoteItemState
             body: props.body,
             header: props.header,
             id: props.id,
+            position: props.position
         }
 
         this.handleHeaderChange = this.handleHeaderChange.bind(this);
@@ -41,10 +44,16 @@ export default class Note extends React.Component<INoteItemProps, INoteItemState
     }
 
     private handleBodyChange(event: any) {
-        this.setState({body: event.target.value});
+        this.setState({
+            ...this.state,
+            body: event.target.value
+        });
       }
     private handleHeaderChange(event: any) {
-        this.setState({header: event.target.value});
+        this.setState({
+            ...this.state,
+            header: event.target.value
+        });
     }
 
     private handleSubmit(event: any) {

@@ -1,7 +1,6 @@
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-// import Note from './Note';
 import Column from './Column';
 import initialData from './initial-data'
 

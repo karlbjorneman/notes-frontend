@@ -1,6 +1,7 @@
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import {Draggable, Droppable } from 'react-beautiful-dnd';
+import Note from './Note';
 
 const grid = 8;
 
@@ -67,9 +68,8 @@ export default class Column extends React.Component<{column: IColumn}, {notes:IN
                                         style={getItemStyle(
                                             snapshot2.isDragging,
                                             provided2.draggableProps.style
-                                        )}
-                                        >
-                                        {note.header}
+                                        )}>
+                                        <Note key={note.id} id={note.id} header={note.header} body={note.body} position={note.position}/>
                                     </div>
                                 )}
                             </Draggable>
