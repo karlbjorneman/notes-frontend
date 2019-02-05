@@ -24,7 +24,7 @@ export default class Board extends React.Component<{}, IBoardState> {
 
   public componentDidMount () {
 
-    fetch('http://localhost:5001/api/notes')
+    fetch('https://gustaftech-noteswebapi.azurewebsites.net/api/notes')
     .then(results => {
         return results.json();
     })

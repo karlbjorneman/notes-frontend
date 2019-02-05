@@ -57,7 +57,7 @@ export default class Note extends React.Component<INoteItemProps, INoteItemState
     }
 
     private handleSubmit(event: any) {
-        fetch('http://localhost:5001/api/notes/' + this.state.id, {
+        fetch('https://gustaftech-noteswebapi.azurewebsites.net/api/notes/' + this.state.id, {
             body: JSON.stringify(this.state),
             headers: {
                 'Access-Control-Allow-Origin': '*',
