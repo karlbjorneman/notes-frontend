@@ -1,9 +1,9 @@
 {
   "name": "muurireacttypescript",
   "version": "0.1.0",
-  "engines": {  
-    "node": "8.11.1"  
-    },
+  "engines": {
+    "node": "8.11.1"
+  },
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.0",
@@ -11,11 +11,11 @@
     "react": "^16.7.0",
     "react-beautiful-dnd": "^10.0.3",
     "react-dom": "^16.7.0",
-    "react-scripts-ts": "3.1.0",
+    "react-scripts-ts": "^4.0.8",
     "typeface-roboto": "0.0.54"
   },
   "scripts": {
-    "start": "node react-scripts-ts start",
+    "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
@@ -25,6 +25,12 @@
     "@types/node": "^10.12.18",
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.11",
-    "typescript": "^3.2.2"
-  }
+    "typescript": "^3.3.1"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
