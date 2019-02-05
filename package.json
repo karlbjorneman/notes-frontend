@@ -1,6 +1,9 @@
 {
   "name": "muurireacttypescript",
   "version": "0.1.0",
+  "engines": {  
+    "node": "8.11.3"  
+    },
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.0",
