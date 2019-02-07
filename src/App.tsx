@@ -1,5 +1,4 @@
 import * as React from 'react';
-import 'typeface-roboto';
 import './App.css';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
