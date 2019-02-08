@@ -1,6 +1,4 @@
-require('typeface-roboto')
 import 'typeface-roboto';
-import 'typeface-roboto/files'
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './App';

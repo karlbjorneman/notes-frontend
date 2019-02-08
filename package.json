@@ -1,7 +1,6 @@
 {
   "name": "muurireacttypescript",
   "version": "0.1.0",
-  "homepage": "https://gustaftech-notesapp.azurewebsites.net",
   "engines": {
     "node": "8.11.1"
   },
