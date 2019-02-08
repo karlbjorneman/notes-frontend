@@ -1,11 +1,16 @@
+import { withStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 import * as React from 'react';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 
 interface INoteItemProps {
     id: string;
     body?: string;
     header?: string;
     position: {column: string}
+    classes: any
   }
   
 interface INoteItemState {
@@ -15,7 +20,18 @@ interface INoteItemState {
     position: {column: string}
 }
 
-export default class Note extends React.Component<INoteItemProps, INoteItemState> {
+const grid = 8;
+
+const styles = (theme: { spacing: { unit: number; }; palette: { text: { secondary: any; }; }; }) => ({
+    paper: {
+      padding: theme.spacing.unit * 2,
+    //   textAlign: 'center',
+      color: theme.palette.text.secondary,
+      margin: `0 0 ${grid}px 0`,
+    },
+  });
+
+class Note extends React.Component<INoteItemProps, INoteItemState> {
 
 
     constructor(props: INoteItemProps) {
@@ -34,12 +50,17 @@ export default class Note extends React.Component<INoteItemProps, INoteItemState
     }
 
     public render() {
+        const classes = this.props.classes;
+
         return (
-                    <div>
-                        <TextField fullWidth={true} value={this.state.header} onChange={this.handleHeaderChange} onBlur={this.handleSubmit}/>
-                        <br/>
-                        <TextField fullWidth={true} value={this.state.body} multiline={true} onChange={this.handleBodyChange} onBlur={this.handleSubmit}/>
-                    </div>
+                    <Card>
+                        <CardContent>
+                            <div className={classes.paper}>
+                                <TextField fullWidth={true} value={this.state.header} onChange={this.handleHeaderChange} onBlur={this.handleSubmit}/>
+                                <TextField fullWidth={true} value={this.state.body} multiline={true} onChange={this.handleBodyChange} onBlur={this.handleSubmit}/>
+                            </div>
+                        </CardContent>
+                    </Card>
         )
     }
 
@@ -69,6 +90,8 @@ export default class Note extends React.Component<INoteItemProps, INoteItemState
         event.preventDefault();
       }
 }
+
+export default withStyles(styles)(Note)
 
 // Note.propTypes = {
 //     body: PropTypes.string,

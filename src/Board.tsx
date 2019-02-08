@@ -1,3 +1,4 @@
+import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
@@ -10,9 +11,22 @@ interface IBoardState {
     error:string
 }
 
-export default class Board extends React.Component<{}, IBoardState> {
+const styles = (theme: { spacing: { unit: number; }; palette: { text: { secondary: any; }; }; }) => ({
+  root: {
+    flexGrow: 1,
+    width: '100%',
+    height: '100%'
+  },
+  // paper: {
+  //   padding: theme.spacing.unit * 2,
+  //   textAlign: 'center',
+  //   color: theme.palette.text.secondary,
+  // },
+});
 
-    constructor (props: {}) {
+class Board extends React.Component<{classes: any}, IBoardState> {
+
+    constructor (props: {classes: any}) {
     super(props);
 
     this.state = {
@@ -55,17 +69,22 @@ export default class Board extends React.Component<{}, IBoardState> {
   }
 
   public render () {
+    const {classes} = this.props;
+
     return (
-        <Grid container={true} spacing={0}>
-            <DragDropContext onDragEnd={this.onDragEnd}>
+      <div className={classes.root}>
+                  <DragDropContext onDragEnd={this.onDragEnd}>
+        <Grid container={true} spacing={16}>
 
             {this.state.columns.map((column:any) => {
                 return (
                   <Column key={column.id} column={column} />
             )
           })}
-            </DragDropContext>
+
         </Grid>
+        </DragDropContext>
+      </div>
     )
   }
 
@@ -134,3 +153,4 @@ export default class Board extends React.Component<{}, IBoardState> {
     };
 }
 
+export default withStyles(styles)(Board)
