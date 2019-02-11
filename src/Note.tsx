@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
+import { TextField, InputBase } from '@material-ui/core';
 import * as React from 'react';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -24,11 +24,13 @@ const grid = 8;
 
 const styles = (theme: { spacing: { unit: number; }; palette: { text: { secondary: any; }; }; }) => ({
     paper: {
-      padding: theme.spacing.unit * 2,
     //   textAlign: 'center',
       color: theme.palette.text.secondary,
       margin: `0 0 ${grid}px 0`,
     },
+    header: {
+        fontSize: 20
+    }
   });
 
 class Note extends React.Component<INoteItemProps, INoteItemState> {
@@ -56,8 +58,8 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
                     <Card>
                         <CardContent>
                             <div className={classes.paper}>
-                                <TextField fullWidth={true} value={this.state.header} onChange={this.handleHeaderChange} onBlur={this.handleSubmit}/>
-                                <TextField fullWidth={true} value={this.state.body} multiline={true} onChange={this.handleBodyChange} onBlur={this.handleSubmit}/>
+                                <InputBase className={classes.header} fullWidth={true} value={this.state.header} onChange={this.handleHeaderChange} onBlur={this.handleSubmit}/>
+                                <InputBase fullWidth={true} value={this.state.body} multiline={true} onChange={this.handleBodyChange} onBlur={this.handleSubmit}/>
                             </div>
                         </CardContent>
                     </Card>
