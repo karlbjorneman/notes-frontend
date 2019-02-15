@@ -4,7 +4,7 @@ import * as React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import AzureStorage, { BlobService } from 'azure-storage/';
+import * as AzureStorage from "@azure/storage-blob";
 
 interface INoteItemProps {
     id: string;
@@ -59,31 +59,41 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
 
     }
 
-    public componentDidMount () {
+    public async componentDidMount () {
         const account = {
             name: 'gustaftechnotes',
             sas:  '?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-02-15T14:55:28Z&st=2019-02-14T06:55:28Z&spr=https&sig=y6xFioLN4HjpTvpmIC3W3rBJjsqp2Mxudhpuhs6vkWo%3D'
         };
         
-        const blobUri = 'https://' + account.name + '.blob.core.windows.net';
-        const blobService = AzureStorage.createBlobServiceWithSas(blobUri, account.sas);
+        const anonymousCredential = new AzureStorage.AnonymousCredential();
+ 
+        // Use sharedKeyCredential, tokenCredential or anonymousCredential to create a pipeline
+        const pipeline = AzureStorage.StorageURL.newPipeline(anonymousCredential);
 
-        const workaround:any = null;
-        blobService.listBlobsSegmented('gustafechnotesblobstorage', workaround, (error:any, results:any) => {
-                if (error) {
-                    // Handle list blobs error
-                } else {
-                    results.entries.forEach((blob:any) => {
-                        let url = blobService.getUrl('gustafechnotesblobstorage', blob.name);
-                        url = url + account.sas;
-                        this.setState({
-                            ...this.state,
-                            imageUrl: url
-                        })
-                        console.log('Name:' + blob.name + ', Type:' + blob.blobType + 'Url:' + url);
-                    });
-                }
-            })           
+        const serviceURL = new AzureStorage.ServiceURL(
+            // When using AnonymousCredential, following url should include a valid SAS or support public access
+            `https://${account.name}.blob.core.windows.net` + account.sas,
+            pipeline
+          );
+
+          const containerURL = AzureStorage.ContainerURL.fromServiceURL(serviceURL, 'gustafechnotesblobstorage');
+          let marker = undefined;
+          do  {
+            const listBlobsResponse:AzureStorage.Models.ContainerListBlobFlatSegmentResponse = await containerURL.listBlobFlatSegment(
+              AzureStorage.Aborter.none,
+              marker
+            );
+         
+            marker = listBlobsResponse.nextMarker;
+            for (const blob of listBlobsResponse.segment.blobItems) {
+              const blobUrl = AzureStorage.BlobURL.fromContainerURL(containerURL, blob.name);
+              console.log(`Blob: ${blob.name}`);
+              this.setState({
+                ...this.state,
+                imageUrl: blobUrl.url
+              })
+            }
+          } while (marker);         
     }
 
     public render() {
