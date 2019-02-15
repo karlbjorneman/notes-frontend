@@ -74,7 +74,7 @@ class Board extends React.Component<{classes: any}, IBoardState> {
     return (
       <div className={classes.root}>
                   <DragDropContext onDragEnd={this.onDragEnd}>
-        <Grid container={true} spacing={16}>
+        <Grid container={true} spacing={0}>
 
             {this.state.columns.map((column:any) => {
                 return (
