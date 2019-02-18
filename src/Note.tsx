@@ -62,9 +62,9 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
     public async componentDidMount () {
         const account = {
             name: 'gustaftechnotes',
-            sas:  '?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-02-15T14:55:28Z&st=2019-02-14T06:55:28Z&spr=https&sig=y6xFioLN4HjpTvpmIC3W3rBJjsqp2Mxudhpuhs6vkWo%3D'
+            sas:  '?sv=2015-12-11&sr=c&sig=AbymxNR6rFctDU3L%2BSOF0%2BA2TGUMB0cAAbEi8bDbhCM%3D&se=2019-03-18T07%3A16%3A11Z&sp=rwl'
         };
-        
+
         const anonymousCredential = new AzureStorage.AnonymousCredential();
  
         // Use sharedKeyCredential, tokenCredential or anonymousCredential to create a pipeline
