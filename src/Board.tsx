@@ -37,8 +37,9 @@ class Board extends React.Component<{classes: any}, IBoardState> {
   }
 
   public componentDidMount () {
-
-    fetch('https://gustaftech-noteswebapi.azurewebsites.net/api/notes')
+    fetch('https://gustaftech-noteswebapi.azurewebsites.net/api/notes'
+    // ,  {credentials: 'include' }
+)
     .then(results => {
         return results.json();
     })
