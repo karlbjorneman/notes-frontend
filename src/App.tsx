@@ -2,9 +2,12 @@ import * as React from 'react';
 import './App.css';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { Route, Switch } from "react-router-dom";
 import { createStyles, WithStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Board from './Board';
+import Login from './containers/Login'
+import Logout from './containers/Logout'
 
 const styles = createStyles ({
   root: {
@@ -31,7 +34,11 @@ class App extends React.Component<IProps> {
             </Typography>
           </header>
           <div className={this.props.classes.root}>
-            <Board/>
+            <Switch>
+              <Route exact={true} path='/' component={Board}/>
+              <Route path='/login' component={Login} />
+              <Route path='/logout' component={Logout} />
+            </Switch>
           </div>
         </div>
       </React.Fragment>

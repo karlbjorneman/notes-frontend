@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import * as AzureStorage from "@azure/storage-blob";
+import {updatenote} from './services/notesService'
 
 interface INoteItemProps {
     id: string;
@@ -129,15 +130,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
     }
 
     private handleSubmit(event: any) {
-        fetch('https://gustaftech-noteswebapi.azurewebsites.net/api/notes/' + this.state.id, {
-            body: JSON.stringify(this.state),
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json;charset=UTF-8'
-            },       
-            method: 'PUT',
-            mode: 'cors'
-        });
+        updatenote(this.state);
         event.preventDefault();
       }
 }

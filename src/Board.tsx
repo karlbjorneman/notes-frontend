@@ -1,9 +1,13 @@
 import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
+import makeCancelable from 'makecancelable'
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from './Column';
 import initialData from './initial-data'
+import {getAllNotes} from './services/notesService'
+import withAuth from './services/withAuth'
+
 
 interface IBoardState {
     columns:any,
@@ -26,7 +30,9 @@ const styles = (theme: { spacing: { unit: number; }; palette: { text: { secondar
 
 class Board extends React.Component<{classes: any}, IBoardState> {
 
-    constructor (props: {classes: any}) {
+  cancelablegetAllNotesRequest: any;
+
+  constructor (props: {classes: any}) {
     super(props);
 
     this.state = {
@@ -37,36 +43,31 @@ class Board extends React.Component<{classes: any}, IBoardState> {
   }
 
   public componentDidMount () {
-    fetch('https://gustaftech-noteswebapi.azurewebsites.net/api/notes'
-    // ,  {credentials: 'include' }
-)
-    .then(results => {
-        return results.json();
-    })
-    .then(data => {
 
-        const notes = data;
-        const columnsWithNotes = initialData.columns.map((column:any) => {
-            column.notes = notes.filter((note:any) => note.position.column === column.id);
-            return column;
-        });
+    this.cancelablegetAllNotesRequest = makeCancelable(
+        getAllNotes(),
+        (data:any) => {
+          const notes = data;
+          const columnsWithNotes = initialData.columns.map((column:any) => {
+              column.notes = notes.filter((note:any) => note.position.column === column.id);
+              return column;
+          });
 
-        this.setState({
-          columns: columnsWithNotes,
-          isLoaded: true
-        });
-    },
-        (error) => {
+          this.setState({
+            columns: columnsWithNotes,
+            isLoaded: true
+          })},
+          (error:any) => {
             this.setState({
               error: error.message,
               isLoaded: true
             });
           }
+      );
+    }
 
-    )
-    .catch(error => { 
-        alert(error);
-    } );
+  public componentWillUnmount() {
+    this.cancelablegetAllNotesRequest();
   }
 
   public render () {
@@ -154,4 +155,22 @@ class Board extends React.Component<{classes: any}, IBoardState> {
     };
 }
 
-export default withStyles(styles)(Board)
+export default withAuth(withStyles(styles)(Board))
+
+// const makeCancelable = (promise: Promise<any>) => {
+//   let hasCanceled_ = false;
+
+//   const wrappedPromise = new Promise((resolve, reject) => {
+//     promise.then(
+//       val => hasCanceled_ ? reject({isCanceled: true}) : resolve(val),
+//       error => hasCanceled_ ? reject({isCanceled: true}) : reject(error)
+//     );
+//   });
+
+//   return {
+//     promise: wrappedPromise,
+//     cancel() {
+//       hasCanceled_ = true;
+//     },
+//   };
+// };
