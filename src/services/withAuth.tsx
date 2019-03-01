@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { GoogleLogin } from 'react-google-login';
-import config from '../config.json';
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
 interface IWithAuthProps {
