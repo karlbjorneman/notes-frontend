@@ -88,7 +88,6 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
             marker = listBlobsResponse.nextMarker;
             for (const blob of listBlobsResponse.segment.blobItems) {
               const blobUrl = AzureStorage.BlobURL.fromContainerURL(containerURL, blob.name);
-              console.log(`Blob: ${blob.name}`);
               this.setState({
                 ...this.state,
                 imageUrl: blobUrl.url
@@ -136,8 +135,3 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
 }
 
 export default withStyles(styles)(Note)
-
-// Note.propTypes = {
-//     body: PropTypes.string,
-//     header: PropTypes.string
-//   };

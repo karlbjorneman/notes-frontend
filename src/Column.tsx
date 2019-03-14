@@ -6,11 +6,7 @@ import Note from './Note';
 const grid = 8;
 
 const getItemStyle = (isDragging: any, draggableStyle: any) => ({
-    // some basic styles to make the items look a bit nicer
-    // margin: `0 0 ${grid}px 0`,
     padding: grid * 2,
-
-    // styles we need to apply on draggables
     ...draggableStyle
 });
 
@@ -19,37 +15,31 @@ const getListStyle = (isDraggingOver: any) => ({
 });
 
 interface IColumn {
-    id: string,
-    tasks: string[],
-    notes: any
+    noteIds: string[]
 }
 
-interface INoteItem {
-    id: string;
-    header: string;
-    body: string;
-    position: {column: string}
+interface INoteRef {
+    byId: any
+    allIds: []
 }
 
-
-
-class Column extends React.Component<{column: IColumn}, {notes:INoteItem[]}> {
+class Column extends React.Component<{id: string, column: IColumn, notes: INoteRef}> {
    
-    constructor(props: {column: IColumn}) {
+    constructor(props: {id: string, column: IColumn, notes: INoteRef}) {
         super(props);
-
-        this.state = {
-            notes: this.props.column.notes
-        };
     }
    
     public render() {
         return (
-            <Droppable droppableId={this.props.column.id}>
+            <Droppable droppableId={this.props.id}>
             {(provided: any, snapshot: any) => (
                 <Grid item={true} xs={4}>
-                <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
-                        {this.state.notes.map((note: INoteItem, index:any) => (
+                    <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+                    {
+                        this.props.column.noteIds.map((noteId: string, index:any) => {                    
+                        let note = this.props.notes.byId[noteId]
+
+                        return(
                             <Draggable
                                 key={note.id}
                                 draggableId={note.id}
@@ -66,14 +56,15 @@ class Column extends React.Component<{column: IColumn}, {notes:INoteItem[]}> {
                                         <Note key={note.id} id={note.id} header={note.header} body={note.body} position={note.position}/>
                                     </div>
                                 )}
-                            </Draggable>
-                        ))}
+                            </Draggable>)
+                        })
+                    }
 
-                        {provided.placeholder}
-                </div>
+                    {provided.placeholder}
+                    </div>
                 </Grid>
             )}
-        </Droppable>
+            </Droppable>
         )
     }
 }
