@@ -51,7 +51,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
             header: props.header,
             id: props.id,
             position: props.position,
-            imageUrl: ""
+            imageUrl: "unknown"
         }
 
         this.handleHeaderChange = this.handleHeaderChange.bind(this);
