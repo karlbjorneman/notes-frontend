@@ -1,10 +1,7 @@
 import {fetchNotesSuccess, fetchNotesFailure} from './../actions/notesActions'
 
-//const baseUrl = 'https://gustaftech-noteswebapi.azurewebsites.net'
-const baseUrl = 'http://localhost:5001'
-
 export function updatenote(state: any) {
-    fetch(baseUrl + '/api/notes/' + state.id, {
+    fetch(process.env.REACT_APP_BASEURL + '/api/notes/' + state.id, {
         body: JSON.stringify(state),
         headers: {
             'Access-Control-Allow-Origin': '*',
@@ -29,7 +26,7 @@ export function getAllNotesDispatched() {
 }
 
 function getAllNotes() {
-    return fetch(baseUrl + '/api/notes')
+    return fetch(process.env.REACT_APP_BASEURL + '/api/notes')
     .then(results => {
         return results.json();
     });

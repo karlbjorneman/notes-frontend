@@ -1,10 +1,7 @@
 import {fetchColumnsSuccess, fetchColumnsFailure} from './../actions/columnsActions'
 
-//const baseUrl = 'https://gustaftech-noteswebapi.azurewebsites.net'
-const baseUrl = 'http://localhost:5001'
-
 function getAllColumns() {
-    return fetch(baseUrl + '/api/columns')
+    return fetch(process.env.REACT_APP_BASEURL + '/api/columns')
     .then(results => {
         return results.json();
     });

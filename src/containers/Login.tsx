@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { connect } from "react-redux";
 import { login } from "../actions/authActions";
-import config from '../config.json';
 import { withRouter, Redirect } from "react-router-dom";
 
 
@@ -32,7 +31,7 @@ class Login extends Component<ILoginProps, ILoginState> {
     }
 
     const tokenBlob = new Blob([JSON.stringify({ tokenId: response.tokenId }, null, 2)], { type: 'application/json' });
-    fetch(config.GOOGLE_AUTH_CALLBACK_URL, {
+    fetch(String(process.env.REACT_APP_GOOGLE_AUTH_CALLBACK_URL), {
             method: 'POST',
             body: tokenBlob,
             mode: 'cors',
@@ -59,7 +58,7 @@ class Login extends Component<ILoginProps, ILoginState> {
       (
         <div>
           <GoogleLogin
-            clientId={config.GOOGLE_CLIENT_ID}
+            clientId={String(process.env.REACT_APP_GOOGLE_CLIENT_ID)}
             buttonText="Google Login"
             onSuccess={this.googleResponse}
             onFailure={this.googleResponse}

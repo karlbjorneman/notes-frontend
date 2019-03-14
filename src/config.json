@@ -1,4 +1,3 @@
 {
-    "GOOGLE_CLIENT_ID": "330874793409-dv8grgngsojfqd70sdcr6ekj9tvnvc95.apps.googleusercontent.com",
-    "GOOGLE_AUTH_CALLBACK_URL": "http://localhost:5001/api/v1/auth/google"
+
 }
