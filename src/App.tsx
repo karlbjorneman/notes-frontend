@@ -12,6 +12,10 @@ import { AppBar, Toolbar, IconButton, ListItemIcon, ListItemText, List, Divider,
 import MenuIcon from '@material-ui/icons/Menu';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import SearchIcon from '@material-ui/icons/Search';
+import MoreIcon from '@material-ui/icons/MoreVert';
 
 const drawerWidth = 240;
 
@@ -20,10 +24,8 @@ const styles = (theme:any) => ({
     display: 'flex',
   },
   appBar: {
-    marginLeft: drawerWidth,
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
+    top: 'auto',
+    bottom: 0,
   },
   menuButton: {
     marginRight: 20,
@@ -31,19 +33,20 @@ const styles = (theme:any) => ({
       display: 'none',
     },
   },
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
+  toolbar: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
+  fabButton: {
+    //position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
   },
   content: {
-    flexGrow: 1,
-    padding: theme.spacing.unit * 3,
+    paddingBottom: 50,
   },
 });
 
@@ -99,57 +102,32 @@ class App extends React.Component<IAppProps, IAppState> {
       <React.Fragment>
         <div className={this.props.classes.root}>
           <CssBaseline/>
-            <AppBar position="fixed" className={this.props.classes.appBar}>
-              <Toolbar>
-                <IconButton
-                  color="inherit"
-                  aria-label="Open drawer"
-                  onClick={this.handleDrawerToggle}
-                  className={this.props.classes.menuButton}
-                >
-                  <MenuIcon />
+          <main className={this.props.classes.content}>
+            <Switch>
+              <Route exact={true} path='/' component={Board}/>
+              <Route path='/login' component={Login} />
+              <Route path='/logout' component={Logout} />
+            </Switch>
+          </main>
+          <AppBar position="fixed" color="primary" className={this.props.classes.appBar}>
+            <Toolbar className={this.props.classes.toolbar}>
+              <IconButton color="inherit" aria-label="Open drawer">
+                <MenuIcon />
+              </IconButton>
+              <Fab color="secondary" aria-label="Add" className={this.props.classes.fabButton}>
+                <AddIcon />
+              </Fab>
+              <div>
+                <IconButton color="inherit">
+                  <SearchIcon />
                 </IconButton>
-                <Typography variant="h6" color="inherit" noWrap>
-                  Responsive drawer
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <nav className={this.props.classes.drawer}>
-              {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-              <Hidden smUp implementation="css">
-                <Drawer
-                  variant="temporary"
-                  anchor={this.props.theme.direction === 'rtl' ? 'right' : 'left'}
-                  open={this.state.mobileOpen}
-                  onClose={this.handleDrawerToggle}
-                  classes={{
-                    paper: this.props.classes.drawerPaper,
-                  }}
-                >
-                  {drawer}
-                </Drawer>
-              </Hidden>
-              <Hidden xsDown implementation="css">
-                <Drawer
-                  classes={{
-                    paper: this.props.classes.drawerPaper,
-                  }}
-                  variant="permanent"
-                  open
-                >
-                  {drawer}
-                </Drawer>
-              </Hidden>
-            </nav>
-            <main className={this.props.classes.content}>
-            <div className={this.props.classes.toolbar} />
-              <Switch>
-                <Route exact={true} path='/' component={Board}/>
-                <Route path='/login' component={Login} />
-                <Route path='/logout' component={Logout} />
-              </Switch>
-            </main>
-          </div>
+                <IconButton color="inherit">
+                  <MoreIcon />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
+        </div>
       </React.Fragment>
     );
   }
