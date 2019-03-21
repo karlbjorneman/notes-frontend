@@ -7,14 +7,7 @@ import {getAllNotesDispatched} from './services/notesService'
 import {getAllColumnsDispatched} from './services/columnsService'
 import withAuth from './services/withAuth'
 import { connect } from 'react-redux';
-import { moveNote, moveNoteToOtherColumn } from './actions/columnsActions'
-
-
-interface IBoardState {
-    columns:any,
-    isLoaded: boolean,
-    error:string
-}
+import { moveNote } from './actions/columnsActions'
 
 interface IBoardProps {
   classes: any, 
@@ -23,9 +16,9 @@ interface IBoardProps {
   notes: any,
   error: string,
   moveNote: any,
-  moveNoteToOtherColumn: any,
   getAllNotesDispatched: any,
-  getAllColumnsDispatched: any
+  getAllColumnsDispatched: any,
+  auth:any
 }
 
 const styles = (theme: { spacing: { unit: number; }; palette: { text: { secondary: any; }; }; }) => ({
@@ -43,8 +36,11 @@ class Board extends React.Component<IBoardProps> {
   }
 
   public componentDidMount () {
-    this.props.getAllColumnsDispatched();
-    this.props.getAllNotesDispatched();
+    if (!this.props.auth.isAuthenticated)
+      return;
+
+      this.props.getAllNotesDispatched();
+      this.props.getAllColumnsDispatched();
     }
 
   public render () {
@@ -65,20 +61,20 @@ class Board extends React.Component<IBoardProps> {
 
   private onDragEnd = (result: { destination: any; source: any; draggableId: any; }) => {
     const { destination, source } = result
-    this.props.moveNoteToOtherColumn(source, destination);
+    this.props.moveNote(source, destination);
   };
 }
 
 const mapStateToProps = (state:any) => ({
   notes: state.notes,
-  columns: state.columns
+  columns: state.columns,
+  auth: state.auth
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   
-    moveNote : (column:any, source: any, destination:any) => dispatch(moveNote(column, source, destination)),
-    moveNoteToOtherColumn : (source: any, destination:any) => 
-        dispatch(moveNoteToOtherColumn(source, destination)),
+    moveNote : (source: any, destination:any) => dispatch(moveNote(source, destination)),
+
     getAllNotesDispatched : () => dispatch(getAllNotesDispatched()),
     getAllColumnsDispatched : () => dispatch(getAllColumnsDispatched())
   });

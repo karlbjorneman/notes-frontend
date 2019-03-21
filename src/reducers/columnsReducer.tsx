@@ -1,8 +1,7 @@
 import {
     FETCH_COLUMNS_SUCCESS,
     FETCH_COLUMNS_FAILURE,
-    MOVE_NOTE,
-    MOVE_NOTE_TO_OTHER_COLUMN
+    MOVE_NOTE
   } from './../actions/columnsActions';
 import {arrayToObject} from '../helpers/arrayExtensions'
 import { fromJS } from 'immutable';
@@ -24,11 +23,8 @@ export default function columnsReducer(state = initialState, action:any) {
                     }),
                 }); 
         case FETCH_COLUMNS_FAILURE:
-
-        case MOVE_NOTE:
-
-
-        case MOVE_NOTE_TO_OTHER_COLUMN:      
+            return state;
+        case MOVE_NOTE:      
             let source = action.payload.source;
             let destination = action.payload.destination;
 

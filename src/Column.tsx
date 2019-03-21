@@ -36,7 +36,11 @@ class Column extends React.Component<{id: string, column: IColumn, notes: INoteR
                 <Grid item={true} xs={4}>
                     <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
                     {
-                        this.props.column.noteIds.map((noteId: string, index:any) => {                    
+                        this.props.column.noteIds.map((noteId: string, index:any) => {        
+                        
+                        if (this.props.notes.allIds.length == 0)
+                            return(null);
+                        
                         let note = this.props.notes.byId[noteId]
 
                         return(
