@@ -1,6 +1,4 @@
 import * as React from 'react';
-import './App.css';
-
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Route, Switch } from "react-router-dom";
 import { WithStyles, withStyles } from '@material-ui/core/styles';
@@ -19,6 +17,8 @@ import Background from './images/login_background.jpg'
 
 const styles = (theme:any) => ({
   root: {
+    minHeight: '100%',
+    height: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
