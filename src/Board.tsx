@@ -23,7 +23,6 @@ interface IBoardProps {
 
 const styles = (theme: { spacing: { unit: number; }; palette: { text: { secondary: any; }; }; }) => ({
   root: {
-    flexGrow: 1,
     width: '100%',
     height: '100%'
   }

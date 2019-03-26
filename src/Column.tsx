@@ -11,7 +11,7 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
 });
 
 const getListStyle = (isDraggingOver: any) => ({
-    height: '100%'
+    width:'100%'
 });
 
 interface IColumn {
