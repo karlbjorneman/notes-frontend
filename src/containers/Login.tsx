@@ -5,9 +5,11 @@ import { login } from "../actions/authActions";
 import { withRouter, Redirect } from "react-router-dom";
 
 
+
 interface ILoginProps {
     login(token:any): any;
-    auth: any
+    auth: any,
+    classes: any
   }
   
 interface ILoginState {
@@ -47,6 +49,8 @@ class Login extends Component<ILoginProps, ILoginState> {
   };
 
   render() {
+    const {classes} = this.props;
+
     let content = this.props.auth.isAuthenticated ?
       (
         <div>
@@ -56,10 +60,10 @@ class Login extends Component<ILoginProps, ILoginState> {
         </div>
       ) :
       (
-        <div>
+        <div className="Aligner">
           <GoogleLogin
             clientId={String(process.env.REACT_APP_GOOGLE_CLIENT_ID)}
-            buttonText="Google Login"
+            buttonText="Sign in with Google"
             onSuccess={this.googleResponse}
             onFailure={this.googleResponse}
           />

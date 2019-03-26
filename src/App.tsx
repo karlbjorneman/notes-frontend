@@ -4,24 +4,28 @@ import './App.css';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Route, Switch } from "react-router-dom";
 import { WithStyles, withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Board from './Board';
 import Login from './containers/Login'
 import Logout from './containers/Logout'
-import { AppBar, Toolbar, IconButton, ListItemIcon, ListItemText, List, Divider, ListItem, Hidden, Drawer } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Background from './images/login_background.jpg'
 
-const drawerWidth = 240;
+// const drawerWidth = 240;
 
 const styles = (theme:any) => ({
   root: {
     display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // backgroundImage: `url(${Background})`,
+    // backgroundPosition: 'center',
+    // backgroundRepeat: 'no-repeat',
+    // backgroundSize: 'cover'
   },
   appBar: {
     top: 'auto',
@@ -74,33 +78,32 @@ class App extends React.Component<IAppProps, IAppState> {
 
   public render() {
 
-    const drawer = (
-      <div>
-        <div className={this.props.classes.toolbar} />
-        <Divider />
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
+    // const drawer = (
+    //   <div>
+    //     <div className={this.props.classes.toolbar} />
+    //     <Divider />
+    //     <List>
+    //       {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+    //         <ListItem button key={text}>
+    //           <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+    //           <ListItemText primary={text} />
+    //         </ListItem>
+    //       ))}
+    //     </List>
+    //     <Divider />
+    //     <List>
+    //       {['All mail', 'Trash', 'Spam'].map((text, index) => (
+    //         <ListItem button key={text}>
+    //           <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+    //           <ListItemText primary={text} />
+    //         </ListItem>
+    //       ))}
+    //     </List>
+    //   </div>
+    // );
 
     return (
-      <React.Fragment>
-        <div className={this.props.classes.root}>
+        <div id="app" className={this.props.classes.root}>
           <CssBaseline/>
           <main className={this.props.classes.content}>
             <Switch>
@@ -128,7 +131,6 @@ class App extends React.Component<IAppProps, IAppState> {
             </Toolbar>
           </AppBar>
         </div>
-      </React.Fragment>
     );
   }
 }

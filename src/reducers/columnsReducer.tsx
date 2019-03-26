@@ -29,11 +29,11 @@ export default function columnsReducer(state = initialState, action:any) {
             let destination = action.payload.destination;
 
             if (!destination) {
-                return;
+                return state;
             }    
             if (destination.droppableId === source.droppableId &&
                 destination.index === source.index) {
-                return;
+                return state;
             }
       
             const startColumn = immutableState.getIn(['byId', source.droppableId]); 
