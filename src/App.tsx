@@ -5,13 +5,7 @@ import { WithStyles, withStyles } from '@material-ui/core/styles';
 import Board from './Board';
 import Login from './containers/Login'
 import Logout from './containers/Logout'
-import { AppBar, Toolbar, IconButton } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import SearchIcon from '@material-ui/icons/Search';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import Background from './images/login_background.jpg'
+
 
 // const drawerWidth = 240;
 
@@ -19,40 +13,10 @@ const styles = (theme:any) => ({
   root: {
     minHeight: '100%',
     height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // backgroundImage: `url(${Background})`,
-    // backgroundPosition: 'center',
-    // backgroundRepeat: 'no-repeat',
-    // backgroundSize: 'cover'
-  },
-  appBar: {
-    top: 'auto',
-    bottom: 0,
-  },
-  menuButton: {
-    marginRight: 20,
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
-  },
-  toolbar: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  fabButton: {
-    //position: 'absolute',
-    zIndex: 1,
-    top: -30,
-    left: 0,
-    right: 0,
-    margin: '0 auto',
   },
   content: {
-    //height: '100%',
+    height: '100%',
     width: '100%',
-    paddingBottom: 60,
   },
 });
 
@@ -114,24 +78,6 @@ class App extends React.Component<IAppProps, IAppState> {
               <Route path='/logout' component={Logout} />
             </Switch>
           </main>
-          <AppBar position="fixed" color="primary" className={this.props.classes.appBar}>
-            <Toolbar className={this.props.classes.toolbar}>
-              <IconButton color="inherit" aria-label="Open drawer">
-                <MenuIcon />
-              </IconButton>
-              <Fab color="secondary" aria-label="Add" className={this.props.classes.fabButton}>
-                <AddIcon />
-              </Fab>
-              <div>
-                <IconButton color="inherit">
-                  <SearchIcon />
-                </IconButton>
-                <IconButton color="inherit">
-                  <MoreIcon />
-                </IconButton>
-              </div>
-            </Toolbar>
-          </AppBar>
         </div>
     );
   }

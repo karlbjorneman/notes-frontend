@@ -8,6 +8,13 @@ import {getAllColumnsDispatched} from './services/columnsService'
 import withAuth from './services/withAuth'
 import { connect } from 'react-redux';
 import { moveNote } from './actions/columnsActions'
+import { AppBar, Toolbar, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import SearchIcon from '@material-ui/icons/Search';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import Background from './images/login_background.jpg'
 
 interface IBoardProps {
   classes: any, 
@@ -21,11 +28,33 @@ interface IBoardProps {
   auth:any
 }
 
-const styles = (theme: { spacing: { unit: number; }; palette: { text: { secondary: any; }; }; }) => ({
+const styles = (theme: any) => ({
   root: {
     width: '100%',
-    height: '100%'
-  }
+    paddingBottom: 50,
+  },
+  appBar: {
+    top: 'auto',
+    bottom: 0,
+  },
+  menuButton: {
+    marginRight: 20,
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
+  toolbar: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  fabButton: {
+    //position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+  },
 });
 
 class Board extends React.Component<IBoardProps> {
@@ -54,6 +83,24 @@ class Board extends React.Component<IBoardProps> {
             })}
           </Grid>
         </DragDropContext>
+        <AppBar position="fixed" color="primary" className={this.props.classes.appBar}>
+            <Toolbar className={this.props.classes.toolbar}>
+              <IconButton color="inherit" aria-label="Open drawer">
+                <MenuIcon />
+              </IconButton>
+              <Fab color="secondary" aria-label="Add" className={this.props.classes.fabButton}>
+                <AddIcon />
+              </Fab>
+              <div>
+                <IconButton color="inherit">
+                  <SearchIcon />
+                </IconButton>
+                <IconButton color="inherit">
+                  <MoreIcon />
+                </IconButton>
+              </div>
+            </Toolbar>
+          </AppBar>
       </div>
     )
   }

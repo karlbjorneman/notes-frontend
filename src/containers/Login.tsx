@@ -3,8 +3,8 @@ import { GoogleLogin } from 'react-google-login';
 import { connect } from "react-redux";
 import { login } from "../actions/authActions";
 import { withRouter, Redirect } from "react-router-dom";
-
-
+import { withStyles } from '@material-ui/core/styles';
+import Background from '../images/login_background.jpg'
 
 interface ILoginProps {
     login(token:any): any;
@@ -19,6 +19,19 @@ interface ILoginState {
     position: {column: string}
     imageUrl: string
 }
+
+const styles = (theme: any) => ({
+  root: {
+    backgroundImage: `url(${Background})`,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+})
 
 class Login extends Component<ILoginProps, ILoginState> {
 
@@ -53,25 +66,20 @@ class Login extends Component<ILoginProps, ILoginState> {
 
     let content = this.props.auth.isAuthenticated ?
       (
-        <div>
           <Redirect to={{
             pathname: '/'
           }} />
-        </div>
       ) :
       (
-        <div className="Aligner">
           <GoogleLogin
             clientId={String(process.env.REACT_APP_GOOGLE_CLIENT_ID)}
             buttonText="Sign in with Google"
             onSuccess={this.googleResponse}
-            onFailure={this.googleResponse}
-          />
-        </div>
+            onFailure={this.googleResponse}/>
       );
 
     return (
-      <div><h1>Login</h1>
+      <div className={classes.root}>
           {content}
       </div>
     );
@@ -92,4 +100,4 @@ const mapDispatchToProps = (dispatch:any) => {
   }
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login) as any);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login)) as any);
