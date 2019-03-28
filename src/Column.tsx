@@ -11,7 +11,8 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
 });
 
 const getListStyle = (isDraggingOver: any) => ({
-    width:'100%'
+    width:'100%',
+    height:'100%'
 });
 
 interface IColumn {
@@ -34,33 +35,34 @@ class Column extends React.Component<{id: string, column: IColumn, notes: INoteR
             <Droppable droppableId={this.props.id}>
             {(provided: any, snapshot: any) => (
                 <Grid item={true} xs={4}>
-                    <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
+                    <div ref={provided.innerRef} {...provided.droppableProps} style={getListStyle(snapshot.isDraggingOver)}>
                     {
                         this.props.column.noteIds.map((noteId: string, index:any) => {        
                         
-                        if (this.props.notes.allIds.length == 0)
-                            return(null);
-                        
-                        let note = this.props.notes.byId[noteId]
+                            if (this.props.notes.allIds.length == 0)
+                                return(null);
+                            
+                            let note = this.props.notes.byId[noteId]
 
-                        return(
-                            <Draggable
-                                key={note.id}
-                                draggableId={note.id}
-                                index={index}>
-                                {(provided2: any, snapshot2: any) => (
-                                    <div
-                                        ref={provided2.innerRef}
-                                        {...provided2.draggableProps}
-                                        {...provided2.dragHandleProps}
-                                        style={getItemStyle(
-                                            snapshot2.isDragging,
-                                            provided2.draggableProps.style
-                                        )}>                                        
-                                        <Note key={note.id} id={note.id} header={note.header} body={note.body} position={note.position}/>
-                                    </div>
-                                )}
-                            </Draggable>)
+                            return(
+                                <Draggable
+                                    key={note.id}
+                                    draggableId={note.id}
+                                    index={index}>
+                                    {(provided2: any, snapshot2: any) => (
+                                        <div
+                                            ref={provided2.innerRef}
+                                            {...provided2.draggableProps}
+                                            {...provided2.dragHandleProps}
+                                            style={getItemStyle(
+                                                snapshot2.isDragging,
+                                                provided2.draggableProps.style
+                                            )}>                                        
+                                            <Note key={note.id} id={note.id} header={note.header} body={note.body} position={note.position}/>
+                                        </div>
+                                    )}
+                                </Draggable>
+                            )
                         })
                     }
 
