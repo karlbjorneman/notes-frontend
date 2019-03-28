@@ -1,13 +1,30 @@
 import * as React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Route, Switch } from "react-router-dom";
-import { WithStyles, withStyles } from '@material-ui/core/styles';
+import { WithStyles, withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Board from './Board';
 import Login from './containers/Login'
 import Logout from './containers/Logout'
 
 
 // const drawerWidth = 240;
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#1eb980',
+      dark: '#045d56',
+      contrastText: '#fff'
+    },
+    secondary: {
+      main: '#ff6859',
+      contrastText: '#000'
+    },
+    background: {
+      default: '#33333d'
+    }
+  }
+});
 
 const styles = (theme:any) => ({
   root: {
@@ -69,8 +86,9 @@ class App extends React.Component<IAppProps, IAppState> {
     // );
 
     return (
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline/>
         <div id="app" className={this.props.classes.root}>
-          <CssBaseline/>
           <main className={this.props.classes.content}>
             <Switch>
               <Route exact={true} path='/' component={Board}/>
@@ -79,6 +97,7 @@ class App extends React.Component<IAppProps, IAppState> {
             </Switch>
           </main>
         </div>
+      </MuiThemeProvider>
     );
   }
 }

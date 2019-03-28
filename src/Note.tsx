@@ -25,10 +25,11 @@ interface INoteItemState {
 
 const grid = 8;
 
-const styles = (theme: { spacing: { unit: number; }; palette: { text: { secondary: any; }; }; }) => ({
+const styles = (theme:any) => ({
+    card: {
+      backgroundColor: '#373740',
+    },
     paper: {
-    //   textAlign: 'center',
-      color: theme.palette.text.secondary,
       margin: `0 0 ${grid}px 0`,
     },
     header: {
@@ -97,10 +98,12 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
     }
 
     public render() {
-        const classes = this.props.classes;
+      const classes = this.props.classes;
+      const colors = ['#1eb980', '#ffcf44', '#72deff'];
+      let selectedColor = colors[Math.floor(Math.random() * colors.length)]
 
         return (
-                    <Card>
+                    <Card className={classes.card} style={{backgroundColor: selectedColor}}>
                         <CardMedia
                             className={classes.media}
                             image={this.state.imageUrl}

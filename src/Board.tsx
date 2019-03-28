@@ -36,6 +36,7 @@ const styles = (theme: any) => ({
   appBar: {
     top: 'auto',
     bottom: 0,
+    backgroundColor: theme.palette.primary.dark
   },
   menuButton: {
     marginRight: 20,
@@ -83,7 +84,7 @@ class Board extends React.Component<IBoardProps> {
             })}
           </Grid>
         </DragDropContext>
-        <AppBar position="fixed" color="primary" className={this.props.classes.appBar}>
+        <AppBar position="fixed" className={this.props.classes.appBar}>
             <Toolbar className={this.props.classes.toolbar}>
               <IconButton color="inherit" aria-label="Open drawer">
                 <MenuIcon />
