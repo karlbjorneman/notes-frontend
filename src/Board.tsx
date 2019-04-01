@@ -14,7 +14,6 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Background from './images/login_background.jpg'
 
 interface IBoardProps {
   classes: any, 
@@ -108,7 +107,7 @@ class Board extends React.Component<IBoardProps> {
 
   private onDragEnd = (result: { destination: any; source: any; draggableId: any; }) => {
     const { destination, source } = result
-    this.props.moveNote(source, destination);
+    this.props.moveNote(source, destination, this.props.auth);
   };
 }
 
@@ -120,7 +119,7 @@ const mapStateToProps = (state:any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   
-    moveNote : (source: any, destination:any) => dispatch(moveNote(source, destination)),
+    moveNote : (source: any, destination:any, auth:any) => dispatch(moveNote(source, destination, auth)),
 
     getAllNotesDispatched : () => dispatch(getAllNotesDispatched()),
     getAllColumnsDispatched : () => dispatch(getAllColumnsDispatched())

@@ -13,11 +13,12 @@ export const fetchColumnsFailure = (error:any) => ({
   payload: { error }
 });
 
-export function moveNote(source:any, destination:any) {
+export function moveNote(source:any, destination:any, auth:any) {
   return {type: MOVE_NOTE,
             payload: {
               source,
-              destination
+              destination,
+              auth
             }
           }
 }

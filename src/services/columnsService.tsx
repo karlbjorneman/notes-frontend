@@ -11,6 +11,19 @@ function getAllColumns(user:any) {
     });
 }
 
+export function updateColumn(id: string, notes: string[], user: any) {
+    fetch(process.env.REACT_APP_BASEURL + '/api/columns/' + id + '/notes', {
+        body: JSON.stringify(notes),
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Authorization': 'Bearer ' + user
+        },       
+        method: 'PUT',
+        mode: 'cors'
+    });
+}
+
 export function getAllColumnsDispatched() {
     return (dispatch:any, getState:Function) => {
         const currentState = getState();

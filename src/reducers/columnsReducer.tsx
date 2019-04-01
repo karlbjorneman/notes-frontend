@@ -5,6 +5,8 @@ import {
   } from './../actions/columnsActions';
 import {arrayToObject} from '../helpers/arrayExtensions'
 import { fromJS } from 'immutable';
+import {updateColumn} from '../services/columnsService' 
+import { loop, Cmd } from 'redux-loop';
 
 const initialState = {
         byId: {},
@@ -27,6 +29,7 @@ export default function columnsReducer(state = initialState, action:any) {
         case MOVE_NOTE:      
             let source = action.payload.source;
             let destination = action.payload.destination;
+            let newState;
 
             if (!destination) {
                 return state;
@@ -39,15 +42,21 @@ export default function columnsReducer(state = initialState, action:any) {
             const startColumn = immutableState.getIn(['byId', source.droppableId]); 
             const finishColumn = immutableState.getIn(['byId', destination.droppableId]); 
       
-            // Moving within column
             if (startColumn.equals(finishColumn)) {
-                moveItemWithinColumn(startColumn, source, destination);
-                return immutableState.toJS();
+                var newList = moveItemWithinColumn(startColumn, source, destination);
+                newState = immutableState.toJS();
             }
-        
-            // Moving to another column
-            moveItemOutsideColumn(startColumn, finishColumn, source, destination);
-            return immutableState.toJS();
+            else {
+                moveItemOutsideColumn(startColumn, finishColumn, source, destination);
+                newState = immutableState.toJS();
+            }
+            
+            const updateColumnCmd = Cmd.run(updateColumn, {
+                args: [destination.droppableId, newList, action.payload.auth.user]
+            });
+
+            return loop(newState, updateColumnCmd);
+
         default:
         return state;
     }
@@ -83,6 +92,6 @@ export default function columnsReducer(state = initialState, action:any) {
 
         immutableState = immutableState.setIn(['byId', startColumn.get('columnId'), 'noteIds'], newList);
 
-        return immutableState;
+        return newList;
     }
 }
