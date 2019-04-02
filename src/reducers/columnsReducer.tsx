@@ -5,7 +5,7 @@ import {
   } from './../actions/columnsActions';
 import {arrayToObject} from '../helpers/arrayExtensions'
 import { fromJS } from 'immutable';
-import {updateColumn} from '../services/columnsService' 
+import {updateColumns} from '../services/columnsService' 
 import { loop, Cmd } from 'redux-loop';
 
 const initialState = {
@@ -43,34 +43,38 @@ export default function columnsReducer(state = initialState, action:any) {
             const finishColumn = immutableState.getIn(['byId', destination.droppableId]); 
       
             if (startColumn.equals(finishColumn)) {
-                var newList = moveItemWithinColumn(startColumn, source, destination);
+                const updateColumnsCmd = moveItemWithinColumn(startColumn, source, destination);
                 newState = immutableState.toJS();
+
+                return loop(newState, updateColumnsCmd);
             }
             else {
-                moveItemOutsideColumn(startColumn, finishColumn, source, destination);
+                const updateColumnsCmd = moveItemOutsideColumn(startColumn, finishColumn, source, destination);
                 newState = immutableState.toJS();
-            }
-            
-            const updateColumnCmd = Cmd.run(updateColumn, {
-                args: [destination.droppableId, newList, action.payload.auth.user]
-            });
 
-            return loop(newState, updateColumnCmd);
+                return loop(newState, updateColumnsCmd);
+            }
 
         default:
         return state;
     }
 
     function moveItemOutsideColumn(startColumn:any, finishColumn:any, source:any, destination:any) {
-        let startNotes = startColumn.get('noteIds');
-        const itemToMoveOutside = startNotes.get(source.index);
-        startNotes = startNotes.delete(source.index);
+        let sourceNotes = startColumn.get('noteIds');
+        const itemToMoveOutside = sourceNotes.get(source.index);
+        sourceNotes = sourceNotes.delete(source.index);
       
-        let finishNotes = finishColumn.get('noteIds');
-        finishNotes = finishNotes.insert(destination.index, itemToMoveOutside);
+        let destinationNotes = finishColumn.get('noteIds');
+        destinationNotes = destinationNotes.insert(destination.index, itemToMoveOutside);
 
-        immutableState = immutableState.setIn(['byId', startColumn.get('columnId'), 'noteIds'], startNotes);
-        immutableState = immutableState.setIn(['byId', finishColumn.get('columnId'), 'noteIds'], finishNotes);
+        immutableState = immutableState.setIn(['byId', startColumn.get('columnId'), 'noteIds'], sourceNotes);
+        immutableState = immutableState.setIn(['byId', finishColumn.get('columnId'), 'noteIds'], destinationNotes);
+
+        const updateColumnsCmd = Cmd.run(updateColumns, {
+            args: [source.droppableId, destination.droppableId, sourceNotes, destinationNotes, action.payload.auth.user]
+        })
+
+        return updateColumnsCmd;
     }
 
     function moveItemWithinColumn(startColumn:any, source:any, destination:any) {
@@ -92,6 +96,10 @@ export default function columnsReducer(state = initialState, action:any) {
 
         immutableState = immutableState.setIn(['byId', startColumn.get('columnId'), 'noteIds'], newList);
 
-        return newList;
+        const updateColumnsCmd = Cmd.run(updateColumns, {
+            args: [source.droppableId, destination.droppableId, newList, null, action.payload.auth.user]
+        })
+
+        return updateColumnsCmd;
     }
 }

@@ -1,19 +1,11 @@
 import {fetchColumnsSuccess, fetchColumnsFailure} from './../actions/columnsActions'
 
-function getAllColumns(user:any) {
-    return fetch(process.env.REACT_APP_BASEURL + '/api/columns', {
-        headers: {
-            'Authorization': 'Bearer ' + user
-        }
-    })
-    .then(results => {
-        return results.json();
-    });
-}
-
-export function updateColumn(id: string, notes: string[], user: any) {
-    fetch(process.env.REACT_APP_BASEURL + '/api/columns/' + id + '/notes', {
-        body: JSON.stringify(notes),
+export function updateColumns(sourceId: string, destinationId: string, sourceNotes: string[], destinationNotes: string[], user: any) {
+    fetch(process.env.REACT_APP_BASEURL + '/api/columns/' + sourceId + '/' + destinationId + '/notes', {
+        body: JSON.stringify({
+            SourceNotes: sourceNotes,
+            DestinationNotes: destinationNotes
+        }),
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json;charset=UTF-8',
@@ -36,4 +28,15 @@ export function getAllColumnsDispatched() {
             dispatch(fetchColumnsFailure(error.message))
         })
     }
+}
+
+function getAllColumns(user:any) {
+    return fetch(process.env.REACT_APP_BASEURL + '/api/columns', {
+        headers: {
+            'Authorization': 'Bearer ' + user
+        }
+    })
+    .then(results => {
+        return results.json();
+    });
 }
