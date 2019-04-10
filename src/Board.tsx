@@ -14,6 +14,10 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Popper from '@material-ui/core/Popper';
+import Typography from '@material-ui/core/Typography';
+import Fade from '@material-ui/core/Fade';
+import Paper from '@material-ui/core/Paper';
 
 interface IBoardProps {
   classes: any, 
@@ -25,6 +29,11 @@ interface IBoardProps {
   getAllNotesDispatched: any,
   getAllColumnsDispatched: any,
   auth:any
+}
+
+interface IBoardState {
+  anchorEl: any,
+  open: boolean
 }
 
 const styles = (theme: any) => ({
@@ -55,13 +64,29 @@ const styles = (theme: any) => ({
     right: 0,
     margin: '0 auto',
   },
+    typography: {
+    padding: theme.spacing.unit * 2,
+  },
 });
 
-class Board extends React.Component<IBoardProps> {
+class Board extends React.Component<IBoardProps, IBoardState> {
 
   constructor (props: IBoardProps) {
     super(props);
+
+    this.state = {
+      anchorEl: null,
+      open: false
+    }
   }
+
+  handleClick = (event:any) => {
+    const { currentTarget } = event;
+    this.setState(state => ({
+      anchorEl: currentTarget,
+      open: !state.open,
+    }));
+  };
 
   public componentDidMount () {
     if (!this.props.auth.isAuthenticated)
@@ -73,6 +98,8 @@ class Board extends React.Component<IBoardProps> {
 
   public render () {
     const {classes} = this.props;
+    const { anchorEl, open } = this.state;
+    const id = open ? 'simple-popper' : undefined;
 
     return (
       <div className={classes.root}>
@@ -88,9 +115,19 @@ class Board extends React.Component<IBoardProps> {
               <IconButton color="inherit" aria-label="Open drawer">
                 <MenuIcon />
               </IconButton>
-              <Fab color="secondary" aria-label="Add" className={this.props.classes.fabButton}>
+              <Fab color="secondary" aria-describedby={id} onMouseDown={this.handleClick} aria-label="Add" className={this.props.classes.fabButton}>
                 <AddIcon />
               </Fab>
+              <Popper id={id} open={open} anchorEl={anchorEl} transition>
+                {({ TransitionProps }) => (
+                  <Fade {...TransitionProps} timeout={350}>
+                    <Paper>
+                      <Typography className={classes.typography}>The content of the Popper.</Typography>
+                    </Paper>
+                  </Fade>
+                )}
+              </Popper>
+
               <div>
                 <IconButton color="inherit">
                   <SearchIcon />
