@@ -14,10 +14,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Popper from '@material-ui/core/Popper';
+import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
-import Fade from '@material-ui/core/Fade';
-import Paper from '@material-ui/core/Paper';
 
 interface IBoardProps {
   classes: any, 
@@ -32,8 +30,7 @@ interface IBoardProps {
 }
 
 interface IBoardState {
-  anchorEl: any,
-  open: boolean
+  anchorEl: any
 }
 
 const styles = (theme: any) => ({
@@ -64,9 +61,6 @@ const styles = (theme: any) => ({
     right: 0,
     margin: '0 auto',
   },
-    typography: {
-    padding: theme.spacing.unit * 2,
-  },
 });
 
 class Board extends React.Component<IBoardProps, IBoardState> {
@@ -75,17 +69,16 @@ class Board extends React.Component<IBoardProps, IBoardState> {
     super(props);
 
     this.state = {
-      anchorEl: null,
-      open: false
+      anchorEl: null
     }
   }
 
-  handleClick = (event:any) => {
-    const { currentTarget } = event;
-    this.setState(state => ({
-      anchorEl: currentTarget,
-      open: !state.open,
-    }));
+  handlePopoverOpen = (event:any) => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handlePopoverClose = () => {
+    this.setState({ anchorEl: null });
   };
 
   public componentDidMount () {
@@ -98,8 +91,7 @@ class Board extends React.Component<IBoardProps, IBoardState> {
 
   public render () {
     const {classes} = this.props;
-    const { anchorEl, open } = this.state;
-    const id = open ? 'simple-popper' : undefined;
+    const open = Boolean(this.state.anchorEl);
 
     return (
       <div className={classes.root}>
@@ -115,18 +107,30 @@ class Board extends React.Component<IBoardProps, IBoardState> {
               <IconButton color="inherit" aria-label="Open drawer">
                 <MenuIcon />
               </IconButton>
-              <Fab color="secondary" aria-describedby={id} onMouseDown={this.handleClick} aria-label="Add" className={this.props.classes.fabButton}>
+              <Fab color="secondary" onMouseDown={this.handlePopoverOpen} aria-label="Add" className={this.props.classes.fabButton}>
                 <AddIcon />
               </Fab>
-              <Popper id={id} open={open} anchorEl={anchorEl} transition>
-                {({ TransitionProps }) => (
-                  <Fade {...TransitionProps} timeout={350}>
-                    <Paper>
-                      <Typography className={classes.typography}>The content of the Popper.</Typography>
-                    </Paper>
-                  </Fade>
-                )}
-              </Popper>
+              <Popover
+                id="mouse-over-popover"
+                className={classes.popover}
+                classes={{
+                  paper: classes.paper,
+                }}
+                open={open}
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                onClose={this.handlePopoverClose}
+                disableRestoreFocus
+              >
+                <Typography>I use Popover.</Typography>
+              </Popover>
 
               <div>
                 <IconButton color="inherit">
