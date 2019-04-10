@@ -8,14 +8,7 @@ import {getAllColumnsDispatched} from './services/columnsService'
 import withAuth from './services/withAuth'
 import { connect } from 'react-redux';
 import { moveNote } from './actions/columnsActions'
-import { AppBar, Toolbar, IconButton } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import SearchIcon from '@material-ui/icons/Search';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import Popover from '@material-ui/core/Popover';
-import Typography from '@material-ui/core/Typography';
+import NotesAppBar from './NotesAppBar';
 
 interface IBoardProps {
   classes: any, 
@@ -30,7 +23,6 @@ interface IBoardProps {
 }
 
 interface IBoardState {
-  anchorEl: any
 }
 
 const styles = (theme: any) => ({
@@ -67,19 +59,7 @@ class Board extends React.Component<IBoardProps, IBoardState> {
 
   constructor (props: IBoardProps) {
     super(props);
-
-    this.state = {
-      anchorEl: null
-    }
   }
-
-  handlePopoverOpen = (event:any) => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handlePopoverClose = () => {
-    this.setState({ anchorEl: null });
-  };
 
   public componentDidMount () {
     if (!this.props.auth.isAuthenticated)
@@ -91,7 +71,6 @@ class Board extends React.Component<IBoardProps, IBoardState> {
 
   public render () {
     const {classes} = this.props;
-    const open = Boolean(this.state.anchorEl);
 
     return (
       <div className={classes.root}>
@@ -102,46 +81,7 @@ class Board extends React.Component<IBoardProps, IBoardState> {
             })}
           </Grid>
         </DragDropContext>
-        <AppBar position="fixed" className={this.props.classes.appBar}>
-            <Toolbar className={this.props.classes.toolbar}>
-              <IconButton color="inherit" aria-label="Open drawer">
-                <MenuIcon />
-              </IconButton>
-              <Fab color="secondary" onMouseDown={this.handlePopoverOpen} aria-label="Add" className={this.props.classes.fabButton}>
-                <AddIcon />
-              </Fab>
-              <Popover
-                id="mouse-over-popover"
-                className={classes.popover}
-                classes={{
-                  paper: classes.paper,
-                }}
-                open={open}
-                anchorEl={this.state.anchorEl}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                onClose={this.handlePopoverClose}
-                disableRestoreFocus
-              >
-                <Typography>I use Popover.</Typography>
-              </Popover>
-
-              <div>
-                <IconButton color="inherit">
-                  <SearchIcon />
-                </IconButton>
-                <IconButton color="inherit">
-                  <MoreIcon />
-                </IconButton>
-              </div>
-            </Toolbar>
-          </AppBar>
+        <NotesAppBar/>
       </div>
     )
   }
