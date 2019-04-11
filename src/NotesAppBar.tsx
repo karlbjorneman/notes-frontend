@@ -5,7 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import classes from '*.module.css';
+import {Card, CardContent, InputBase} from '@material-ui/core';
 
 interface IAppBarProps {
     classes: any, 
@@ -14,6 +14,8 @@ interface IAppBarProps {
 interface IAppBarState {
     anchorEl: any
 }
+
+const grid = 8;
 
 const styles = (theme: any) => ({
     appBar: {
@@ -39,6 +41,20 @@ const styles = (theme: any) => ({
       right: 0,
       margin: '0 auto',
     },
+
+    card: {
+        backgroundColor: '#373740',
+      },
+      paper: {
+        margin: `0 0 ${grid}px 0`,
+      },
+      header: {
+          fontSize: 20
+      },
+      media: {
+          height: 0,
+          paddingTop: '56.25%', // 16:9
+        }
   });
 
 class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
@@ -83,17 +99,24 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
                     open={open}
                     anchorEl={this.state.anchorEl}
                     anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
+                    vertical: 'top',
+                    horizontal: 'center',
                     }}
                     transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
+                    vertical: 'bottom',
+                    horizontal: 'center',
                     }}
                     onClose={this.handlePopoverClose}
                     disableRestoreFocus
                 >
-                    <Typography>I use Popover.</Typography>
+                    <Card className={classes.card} >
+                        <CardContent>
+                            <div className={classes.paper}>
+                                <InputBase className={classes.header} fullWidth={true} value={"test header"} />
+                                <InputBase fullWidth={true} value={"test body"} multiline={true} />
+                            </div>
+                        </CardContent>
+                    </Card>
                 </Popover>
 
                 <div>
