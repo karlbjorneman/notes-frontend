@@ -5,6 +5,7 @@ import { WithStyles, withStyles, MuiThemeProvider, createMuiTheme } from '@mater
 import Board from './Board';
 import Login from './containers/Login'
 import Logout from './containers/Logout'
+import { red } from '@material-ui/core/colors';
 
 
 // const drawerWidth = 240;
@@ -22,8 +23,12 @@ const theme = createMuiTheme({
     },
     background: {
       default: '#33333d'
+    },
+    text: {
+      primary: '#33333d',
+      secondary: '#a3a3a3'
     }
-  }
+  },
 });
 
 const styles = (theme:any) => ({

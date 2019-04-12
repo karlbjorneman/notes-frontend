@@ -5,6 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import AddImageIcon from '@material-ui/icons/ImageOutlined';
 import {Card, CardContent, InputBase} from '@material-ui/core';
 
 interface IAppBarProps {
@@ -12,7 +13,8 @@ interface IAppBarProps {
 }
 
 interface IAppBarState {
-    anchorEl: any
+    anchorEl: any,
+    body: string
 }
 
 const grid = 8;
@@ -41,20 +43,27 @@ const styles = (theme: any) => ({
       right: 0,
       margin: '0 auto',
     },
-
+    popover: {
+        margin: 'auto'
+    },
     card: {
-        backgroundColor: '#373740',
-      },
-      paper: {
-        margin: `0 0 ${grid}px 0`,
-      },
-      header: {
-          fontSize: 20
-      },
-      media: {
-          height: 0,
-          paddingTop: '56.25%', // 16:9
-        }
+        // backgroundColor: '#373740',
+        
+    },
+    paper: {
+    margin: `0 0 ${grid}px 0`,
+    },
+    header: {
+        fontSize: 20,
+    },
+    media: {
+        height: 0,
+        paddingTop: '56.25%', // 16:9
+    },
+    addImageIcon: {
+        color: theme.palette.text.secondary,
+        marginLeft: '-2px'
+    }
   });
 
 class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
@@ -62,11 +71,13 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
         super(props)
 
         this.state = {
-            anchorEl: null
+            anchorEl: null,
+            body: ""
         }
 
         this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
         this.handlePopoverClose = this.handlePopoverClose.bind(this);
+        this.handleBodyChange = this.handleBodyChange.bind(this);
     }
 
     handlePopoverOpen = (event:any) => {
@@ -76,6 +87,13 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
     handlePopoverClose = () => {
     this.setState({ anchorEl: null });
     };
+
+    private handleBodyChange(event: any) {
+        this.setState({
+            ...this.state,
+            body: event.target.value
+        });
+      }
 
     public render() {
         const classes = this.props.classes;
@@ -93,9 +111,6 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
                 <Popover
                     id="mouse-over-popover"
                     className={classes.popover}
-                    classes={{
-                    paper: classes.paper,
-                    }}
                     open={open}
                     anchorEl={this.state.anchorEl}
                     anchorOrigin={{
@@ -112,8 +127,9 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
                     <Card className={classes.card} >
                         <CardContent>
                             <div className={classes.paper}>
-                                <InputBase className={classes.header} fullWidth={true} value={"test header"} />
-                                <InputBase fullWidth={true} value={"test body"} multiline={true} />
+                                <InputBase className={classes.header} fullWidth={true} />
+                                <InputBase fullWidth={true} multiline={true} onChange={this.handleBodyChange}/>
+                                <AddImageIcon className={classes.addImageIcon}/>
                             </div>
                         </CardContent>
                     </Card>
