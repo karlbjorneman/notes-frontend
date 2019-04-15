@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar, IconButton, Fab, Popover, Typography } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Fab, Popover} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
@@ -18,6 +18,7 @@ interface IAppBarState {
 }
 
 const grid = 8;
+
 
 const styles = (theme: any) => ({
     appBar: {
@@ -75,17 +76,21 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
             body: ""
         }
 
+        this.updatePopover = null;
+
         this.handlePopoverOpen = this.handlePopoverOpen.bind(this);
         this.handlePopoverClose = this.handlePopoverClose.bind(this);
         this.handleBodyChange = this.handleBodyChange.bind(this);
     }
+
+    updatePopover: any;
 
     handlePopoverOpen = (event:any) => {
         this.setState({ anchorEl: event.currentTarget });
       };
     
     handlePopoverClose = () => {
-    this.setState({ anchorEl: null });
+        this.setState({ anchorEl: null });
     };
 
     private handleBodyChange(event: any) {
@@ -93,7 +98,11 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
             ...this.state,
             body: event.target.value
         });
-      }
+
+        if (this.updatePopover != null) {
+            this.updatePopover.updatePosition();
+        }
+    }
 
     public render() {
         const classes = this.props.classes;
@@ -102,16 +111,22 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
         return (
             <AppBar position="fixed" className={classes.appBar}>
                 <Toolbar className={classes.toolbar}>
+
                 <IconButton color="inherit" aria-label="Open drawer">
                     <MenuIcon />
                 </IconButton>
+
                 <Fab color="secondary" onMouseDown={this.handlePopoverOpen} aria-label="Add" className={classes.fabButton}>
                     <AddIcon />
                 </Fab>
+                
                 <Popover
-                    id="mouse-over-popover"
+                    id="addPopover"
                     className={classes.popover}
                     open={open}
+                    action = {((actions: any) => {
+                         this.updatePopover = actions
+                        })}
                     anchorEl={this.state.anchorEl}
                     anchorOrigin={{
                     vertical: 'top',
@@ -122,13 +137,12 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
                     horizontal: 'center',
                     }}
                     onClose={this.handlePopoverClose}
-                    disableRestoreFocus
-                >
+                    disableRestoreFocus>
                     <Card className={classes.card} >
                         <CardContent>
                             <div className={classes.paper}>
-                                <InputBase className={classes.header} fullWidth={true} />
-                                <InputBase fullWidth={true} multiline={true} onChange={this.handleBodyChange}/>
+                                <InputBase className={classes.header} fullWidth={true} defaultValue={"Heading"} autoFocus={true}/>
+                                <InputBase fullWidth={true} multiline={true} onChange={this.handleBodyChange} defaultValue={"Make a note..."} autoFocus={true}/>
                                 <AddImageIcon className={classes.addImageIcon}/>
                             </div>
                         </CardContent>

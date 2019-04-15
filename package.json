@@ -15,7 +15,7 @@
     "immutable": "^4.0.0-rc.12",
     "jsonwebtoken": "^8.5.0",
     "makecancelable": "^1.0.0",
-    "npm": "^6.7.0",
+    "npm": "^6.9.0",
     "react": "^16.7.0",
     "react-beautiful-dnd": "^10.0.3",
     "react-dom": "^16.7.0",
