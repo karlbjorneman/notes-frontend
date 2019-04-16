@@ -4,13 +4,15 @@ import {Card, CardContent, CardMedia, InputBase} from '@material-ui/core';
 import AddImageIcon from '@material-ui/icons/ImageOutlined';
 import * as AzureStorage from "@azure/storage-blob";
 import {updatenote} from './services/notesService'
+import { connect } from 'react-redux';
 
 interface INoteItemProps {
     id?: string;
     body?: string;
     header?: string;
     position?: {column: string}
-    classes: any
+    classes: any,
+    auth:any
   }
   
 interface INoteItemState {
@@ -100,29 +102,29 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
       const colors = ['#1eb980', '#ffcf44', '#72deff'];
       let selectedColor = colors[Math.floor(Math.random() * colors.length)]
 
-        return (
-                    <Card className={classes.card} style={{backgroundColor: selectedColor}}>
-                        <CardMedia
-                            className={classes.media}
-                            image={this.state.imageUrl}
-                        />
-                        <CardContent>
-                          <InputBase 
-                            className={classes.header} 
-                            fullWidth={true} 
-                            value={this.state.header} 
-                            onChange={this.handleHeaderChange} 
-                            onBlur={this.handleSubmit}/>
-                          <InputBase 
-                            fullWidth={true} 
-                            value={this.state.body} 
-                            multiline={true} 
-                            onChange={this.handleBodyChange} 
-                            onBlur={this.handleSubmit}/>
-                        </CardContent>
-                        <AddImageIcon className={classes.addImageIcon}/>
-                    </Card>
-        )
+      return (
+        <Card className={classes.card} style={{backgroundColor: selectedColor}}>
+            <CardMedia
+                className={classes.media}
+                image={this.state.imageUrl}
+            />
+            <CardContent>
+              <InputBase 
+                className={classes.header} 
+                fullWidth={true} 
+                value={this.state.header} 
+                onChange={this.handleHeaderChange} 
+                onBlur={this.handleSubmit}/>
+              <InputBase 
+                fullWidth={true} 
+                value={this.state.body} 
+                multiline={true} 
+                onChange={this.handleBodyChange} 
+                onBlur={this.handleSubmit}/>
+            </CardContent>
+            <AddImageIcon className={classes.addImageIcon}/>
+        </Card>
+      )
     }
 
     private handleBodyChange(event: any) {
@@ -139,9 +141,13 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
     }
 
     private handleSubmit(event: any) {
-        updatenote(this.state);
+        updatenote(this.state, this.props.auth.user);
         event.preventDefault();
       }
 }
 
-export default withStyles(styles)(Note)
+const mapStateToProps = (state:any) => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps)(withStyles(styles)(Note))
