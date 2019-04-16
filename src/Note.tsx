@@ -1,22 +1,23 @@
 import { withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
 import {Card, CardContent, CardMedia, InputBase} from '@material-ui/core';
+import AddImageIcon from '@material-ui/icons/ImageOutlined';
 import * as AzureStorage from "@azure/storage-blob";
 import {updatenote} from './services/notesService'
 
 interface INoteItemProps {
-    id: string;
+    id?: string;
     body?: string;
     header?: string;
-    position: {column: string}
+    position?: {column: string}
     classes: any
   }
   
 interface INoteItemState {
-    id: string;
+    id?: string;
     body?: string;
     header?: string;
-    position: {column: string}
+    position?: {column: string}
     imageUrl: string
 }
 
@@ -26,20 +27,20 @@ const styles = (theme:any) => ({
     card: {
       backgroundColor: '#373740',
     },
-    paper: {
-      margin: `0 0 ${grid}px 0`,
-    },
     header: {
         fontSize: 20
     },
     media: {
         height: 0,
         paddingTop: '56.25%', // 16:9
-      }
+    },
+    addImageIcon: {
+      color: 'theme.palette.text.primary',
+      margin: '0 0 0 13px'
+    }
   });
 
 class Note extends React.Component<INoteItemProps, INoteItemState> {
-
 
     constructor(props: INoteItemProps) {
         super(props);
@@ -106,11 +107,20 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
                             image={this.state.imageUrl}
                         />
                         <CardContent>
-                            <div className={classes.paper}>
-                                <InputBase className={classes.header} fullWidth={true} value={this.state.header} onChange={this.handleHeaderChange} onBlur={this.handleSubmit}/>
-                                <InputBase fullWidth={true} value={this.state.body} multiline={true} onChange={this.handleBodyChange} onBlur={this.handleSubmit}/>
-                            </div>
+                          <InputBase 
+                            className={classes.header} 
+                            fullWidth={true} 
+                            value={this.state.header} 
+                            onChange={this.handleHeaderChange} 
+                            onBlur={this.handleSubmit}/>
+                          <InputBase 
+                            fullWidth={true} 
+                            value={this.state.body} 
+                            multiline={true} 
+                            onChange={this.handleBodyChange} 
+                            onBlur={this.handleSubmit}/>
                         </CardContent>
+                        <AddImageIcon className={classes.addImageIcon}/>
                     </Card>
         )
     }

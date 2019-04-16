@@ -5,8 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import AddImageIcon from '@material-ui/icons/ImageOutlined';
-import {Card, CardContent, InputBase} from '@material-ui/core';
+import Note from './Note';
 
 interface IAppBarProps {
     classes: any, 
@@ -16,9 +15,6 @@ interface IAppBarState {
     anchorEl: any,
     body: string
 }
-
-const grid = 8;
-
 
 const styles = (theme: any) => ({
     appBar: {
@@ -44,27 +40,6 @@ const styles = (theme: any) => ({
       right: 0,
       margin: '0 auto',
     },
-    popover: {
-        margin: 'auto'
-    },
-    card: {
-        // backgroundColor: '#373740',
-        
-    },
-    paper: {
-    margin: `0 0 ${grid}px 0`,
-    },
-    header: {
-        fontSize: 20,
-    },
-    media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9
-    },
-    addImageIcon: {
-        color: theme.palette.text.secondary,
-        marginLeft: '-2px'
-    }
   });
 
 class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
@@ -138,15 +113,8 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
                     }}
                     onClose={this.handlePopoverClose}
                     disableRestoreFocus>
-                    <Card className={classes.card} >
-                        <CardContent>
-                            <div className={classes.paper}>
-                                <InputBase className={classes.header} fullWidth={true} defaultValue={"Heading"} autoFocus={true}/>
-                                <InputBase fullWidth={true} multiline={true} onChange={this.handleBodyChange} defaultValue={"Make a note..."} autoFocus={true}/>
-                                <AddImageIcon className={classes.addImageIcon}/>
-                            </div>
-                        </CardContent>
-                    </Card>
+
+                    <Note id={""} header={"Heading"} body={"Make a note..."} />
                 </Popover>
 
                 <div>
