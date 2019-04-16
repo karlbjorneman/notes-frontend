@@ -3,11 +3,11 @@ import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import Column from './Column';
-import {getAllNotesDispatched} from './services/notesService'
-import {getAllColumnsDispatched} from './services/columnsService'
-import withAuth from './services/withAuth'
+import {getAllNotesDispatched} from '../services/notesService'
+import {getAllColumnsDispatched} from '../services/columnsService'
+import withAuth from '../services/withAuth'
 import { connect } from 'react-redux';
-import { moveNote } from './actions/columnsActions'
+import { moveNote } from '../actions/columnsActions'
 import NotesAppBar from './NotesAppBar';
 
 interface IBoardProps {

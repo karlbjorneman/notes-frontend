@@ -3,7 +3,7 @@ import * as React from 'react';
 import {Card, CardContent, CardMedia, InputBase} from '@material-ui/core';
 import AddImageIcon from '@material-ui/icons/ImageOutlined';
 import * as AzureStorage from "@azure/storage-blob";
-import {updatenote} from './services/notesService'
+import {updatenote} from '../services/notesService'
 import { connect } from 'react-redux';
 
 interface INoteItemProps {

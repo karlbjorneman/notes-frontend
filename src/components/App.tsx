@@ -3,8 +3,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { Route, Switch } from "react-router-dom";
 import { WithStyles, withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Board from './Board';
-import Login from './containers/Login'
-import Logout from './containers/Logout'
+import Login from './Login'
+import Logout from './Logout'
 import { red } from '@material-ui/core/colors';
 
 
