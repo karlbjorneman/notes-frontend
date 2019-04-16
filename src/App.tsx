@@ -11,6 +11,9 @@ import { red } from '@material-ui/core/colors';
 // const drawerWidth = 240;
 
 const theme = createMuiTheme({
+  typography: {
+    useNextVariants: true,
+  },
   palette: {
     primary: {
       main: '#1eb980',
