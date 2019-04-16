@@ -23,11 +23,11 @@ interface INoteItemState {
     imageUrl: string
 }
 
-const grid = 8;
+const backgroundColor = '#37374055';
 
 const styles = (theme:any) => ({
     card: {
-      backgroundColor: '#373740',
+      backgroundColor: backgroundColor
     },
     header: {
         fontSize: 20
@@ -36,8 +36,12 @@ const styles = (theme:any) => ({
         height: 0,
         paddingTop: '56.25%', // 16:9
     },
+    toolBar: {
+      backgroundColor: backgroundColor,
+      paddingTop: '4px'
+    },
     addImageIcon: {
-      color: 'theme.palette.text.primary',
+      color: theme.palette.text.primary,
       margin: '0 0 0 13px'
     }
   });
@@ -122,7 +126,9 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
                 onChange={this.handleBodyChange} 
                 onBlur={this.handleSubmit}/>
             </CardContent>
-            <AddImageIcon className={classes.addImageIcon}/>
+            <div className={classes.toolBar}>
+              <AddImageIcon className={classes.addImageIcon}/>
+            </div>
         </Card>
       )
     }
