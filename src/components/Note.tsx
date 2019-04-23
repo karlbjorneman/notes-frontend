@@ -68,7 +68,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
     public async componentDidMount () {
         const account = {
             name: 'gustaftechnotes',
-            sas:  '?sv=2018-03-28&sr=c&sig=sGtKJp2MwNHAzAfXo%2BjKmgZ44Kdj5nQ0FvRlkXvgBn4%3D&se=2019-04-18T14%3A51%3A54Z&sp=rwl'
+            sas:  '?sv=2018-03-28&sr=c&sig=Y8QjXeF79V5DxS%2BJPHU6SZgKLAWUENHRjdp2pXfbkcQ%3D&se=2019-05-23T13%3A39%3A08Z&sp=rwl'
         };
 
         const anonymousCredential = new AzureStorage.AnonymousCredential();
