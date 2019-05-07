@@ -1,7 +1,8 @@
 import {
     FETCH_COLUMNS_SUCCESS,
     FETCH_COLUMNS_FAILURE,
-    MOVE_NOTE
+    MOVE_NOTE,
+    ADD_NOTE_TO_COLUMN
   } from './../actions/columnsActions';
 import {arrayToObject} from '../helpers/arrayExtensions'
 import { fromJS } from 'immutable';
@@ -54,9 +55,18 @@ export default function columnsReducer(state = initialState, action:any) {
 
                 return loop(newState, updateColumnsCmd);
             }
+        case ADD_NOTE_TO_COLUMN:
+            const note = action.payload.note;
+            
+            let columnNotes = immutableState.getIn(['byId', note.position.column, 'noteIds']);
+            columnNotes = columnNotes.insert(0, note.id);
 
+            immutableState = immutableState.setIn(['byId', note.position.column, 'noteIds'], columnNotes);
+
+            const res = immutableState.toJS();
+            return res;
         default:
-        return state;
+            return state;
     }
 
     function moveItemOutsideColumn(startColumn:any, finishColumn:any, source:any, destination:any) {

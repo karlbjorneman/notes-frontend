@@ -5,7 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import Note from './Note';
+import AddNote from './AddNote';
 
 interface IAppBarProps {
     classes: any, 
@@ -114,7 +114,7 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
                     onClose={this.handlePopoverClose}
                     disableRestoreFocus>
 
-                    <Note id={""} header={"Heading"} body={"Make a note..."} />
+                    <AddNote id={""} header={"Heading"} body={"Make a note..."} />
                 </Popover>
 
                 <div>

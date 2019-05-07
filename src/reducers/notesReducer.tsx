@@ -1,25 +1,10 @@
 import {
     FETCH_NOTES_SUCCESS,
-    FETCH_NOTES_FAILURE
+    FETCH_NOTES_FAILURE,
+    ADD_NOTE_SUCCESS
   } from './../actions/notesActions';
 import {arrayToObject} from '../helpers/arrayExtensions'
-
-//   const initialState = {
-//     columns: [
-//         {
-//           id: 'column-1',
-//           notes: []
-//         },
-//         {
-//           id: 'column-2',
-//           notes: []
-//         },
-//         {
-//           id: 'column-3',
-//           notes: []
-//         }
-//       ]
-//   }
+import {fromJS} from 'immutable'
 
   const initialState = {
           byId: {},
@@ -40,6 +25,25 @@ import {arrayToObject} from '../helpers/arrayExtensions'
             return Object.assign({}, state, {
                 error: action.payload.error
             });
+        case ADD_NOTE_SUCCESS:
+            let immutableState = fromJS(state); 
+
+            let allIds = immutableState.get('allIds');
+            allIds = allIds.push(action.payload.note.id);
+            immutableState = immutableState.set('allIds', allIds);
+            
+            immutableState = immutableState.setIn(['byId', action.payload.note.id], action.payload.note);
+
+            // const addNoteCmd = Cmd.run(addnote, {
+            //     successActionCreator: addNoteSuccess,
+            //     args: [action.payload.header, action.payload.body, action.payload.auth]
+            // })
+            return immutableState.toJS();            
+            // return loop(state, addNoteCmd);
+        // case ADD_NOTE_SUCCESS:
+        //     let immutableState = fromJS(state);    
+
+        //     return state;
         default:
             return state;
     }
