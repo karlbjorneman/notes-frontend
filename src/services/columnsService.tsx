@@ -1,6 +1,6 @@
 import {fetchColumnsSuccess, fetchColumnsFailure} from './../actions/columnsActions'
 
-export function updateColumns(sourceId: string, destinationId: string, sourceNotes: string[], destinationNotes: string[], user: any) {
+export function updateColumns(sourceId: string, destinationId: string, sourceNotes: string[], destinationNotes: string[], tokenId: any) {
     fetch(process.env.REACT_APP_BASEURL + '/api/columns/' + sourceId + '/' + destinationId + '/notes', {
         body: JSON.stringify({
             SourceNotes: sourceNotes,
@@ -9,7 +9,7 @@ export function updateColumns(sourceId: string, destinationId: string, sourceNot
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json;charset=UTF-8',
-            'Authorization': 'Bearer ' + user
+            'Authorization': 'Bearer ' + tokenId
         },       
         method: 'PUT',
         mode: 'cors'
@@ -19,7 +19,7 @@ export function updateColumns(sourceId: string, destinationId: string, sourceNot
 export function getAllColumnsDispatched() {
     return (dispatch:any, getState:Function) => {
         const currentState = getState();
-        getAllColumns(currentState.auth.user)
+        getAllColumns(currentState.auth.tokenId)
         .then((data:any) => {
             const columns = data;
             dispatch(fetchColumnsSuccess(columns))
@@ -30,10 +30,10 @@ export function getAllColumnsDispatched() {
     }
 }
 
-function getAllColumns(user:any) {
+function getAllColumns(tokenId:any) {
     return fetch(process.env.REACT_APP_BASEURL + '/api/columns', {
         headers: {
-            'Authorization': 'Bearer ' + user
+            'Authorization': 'Bearer ' + tokenId
         }
     })
     .then(results => {

@@ -16,7 +16,10 @@ export default enhancedCreateStore(combineReducers({
 }),
     { 
         auth: { 
-            user: '', isAuthenticated: false 
+            tokenId: '', 
+            googleAccessToken: '',
+            user: null,
+            isAuthenticated: false 
         },
         notes: { byId: {}, allIds: [] },
         columns: { byId: {}, allIds: [] } 

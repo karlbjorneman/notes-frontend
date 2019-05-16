@@ -1,13 +1,13 @@
 import {addNoteSuccess, fetchNotesSuccess, fetchNotesFailure} from './../actions/notesActions'
 import {addNoteToColumn} from '../actions/columnsActions'
 
-export function updatenote(state: any, user:any) {
+export function updatenote(state: any, tokenId:any) {
     fetch(process.env.REACT_APP_BASEURL + '/api/notes/' + state.id, {
         body: JSON.stringify(state),
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json;charset=UTF-8',
-            'Authorization': 'Bearer ' + user
+            'Authorization': 'Bearer ' + tokenId
         },       
         method: 'PUT',
         mode: 'cors'
@@ -17,7 +17,7 @@ export function updatenote(state: any, user:any) {
 export function addNoteDispatched(header:string, body:string) {
     return (dispatch:any, getState:any) => {
         const currentState = getState();
-        addNote(header, body, currentState.auth.user)
+        addNote(header, body, currentState.auth.tokenId)
         .then((data:any) => {
             const notes = data;
             dispatch(addNoteSuccess(notes));
@@ -29,7 +29,7 @@ export function addNoteDispatched(header:string, body:string) {
     }
 }
 
-function addNote(header: string, body: string, user:any) {
+function addNote(header: string, body: string, tokenId:any) {
     return fetch(process.env.REACT_APP_BASEURL + '/api/notes/', {
         body: JSON.stringify({
                 Header: header,
@@ -38,7 +38,7 @@ function addNote(header: string, body: string, user:any) {
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json;charset=UTF-8',
-            'Authorization': 'Bearer ' + user
+            'Authorization': 'Bearer ' + tokenId
         },       
         method: 'POST',
         mode: 'cors'
@@ -51,7 +51,7 @@ function addNote(header: string, body: string, user:any) {
 export function getAllNotesDispatched() {
     return (dispatch:any, getState:any) => {
         const currentState = getState();
-        getAllNotes(currentState.auth.user)
+        getAllNotes(currentState.auth.tokenId)
         .then((data:any) => {
             const notes = data;
             dispatch(fetchNotesSuccess(notes))
@@ -62,10 +62,10 @@ export function getAllNotesDispatched() {
     }
 }
 
-function getAllNotes(user:any) {
+function getAllNotes(tokenId:any) {
     return fetch(process.env.REACT_APP_BASEURL + '/api/notes', {
         headers: {
-            'Authorization': 'Bearer ' + user
+            'Authorization': 'Bearer ' + tokenId
         }
     })
     .then(results => {

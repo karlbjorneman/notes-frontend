@@ -4,10 +4,12 @@ import { connect } from "react-redux";
 import { login } from "../actions/authActions";
 import { withRouter, Redirect } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
-import Background from '../images/login_background.jpg'
+import Background from '../images/login_background.jpg';
+import IUser from '../interfaces/IUser'
+
 
 interface ILoginProps {
-    login(token:any): any;
+    login(token:string, googleAccessToken:string, user: IUser): any;
     auth: any,
     classes: any
   }
@@ -45,7 +47,7 @@ class Login extends Component<ILoginProps, ILoginState> {
       return;
     }
 
-    const tokenBlob = new Blob([JSON.stringify({ tokenId: response.tokenId }, null, 2)], { type: 'application/json' });
+    const tokenBlob = new Blob([JSON.stringify({ tokenId: response.tokenId, googleAccessToken: response.tokenObj.access_token }, null, 2)], { type: 'application/json' });
     fetch(String(process.env.REACT_APP_GOOGLE_AUTH_CALLBACK_URL), {
             method: 'POST',
             body: tokenBlob,
@@ -53,10 +55,11 @@ class Login extends Component<ILoginProps, ILoginState> {
             cache: 'default'
           })
       .then(r => {
-        r.json().then(user => {
-          const token = user.token;
-          console.log(token);
-          this.props.login(token);
+        r.json()
+        .then(data => {
+          const token = data.token;
+          const user = data.user;
+          this.props.login(token, response.tokenObj.access_token, user);
         });
       })
   };
@@ -74,6 +77,7 @@ class Login extends Component<ILoginProps, ILoginState> {
           <GoogleLogin
             clientId={String(process.env.REACT_APP_GOOGLE_CLIENT_ID)}
             buttonText="Sign in with Google"
+            scope="profile email https://www.googleapis.com/auth/photoslibrary.readonly https://www.googleapis.com/auth/photoslibrary.appendonly"
             onSuccess={this.googleResponse}
             onFailure={this.googleResponse}/>
       );
@@ -94,8 +98,8 @@ const mapStateToProps = (state:any) => {
 
 const mapDispatchToProps = (dispatch:any) => {
   return {
-    login: (token:any) => {
-      dispatch(login(token));
+    login: (token:string, googleAccessToken:string, user:IUser) => {
+      dispatch(login(token, googleAccessToken, user));
     }
   }
 };

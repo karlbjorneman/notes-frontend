@@ -81,7 +81,7 @@ export default function columnsReducer(state = initialState, action:any) {
         immutableState = immutableState.setIn(['byId', finishColumn.get('columnId'), 'noteIds'], destinationNotes);
 
         const updateColumnsCmd = Cmd.run(updateColumns, {
-            args: [source.droppableId, destination.droppableId, sourceNotes, destinationNotes, action.payload.auth.user]
+            args: [source.droppableId, destination.droppableId, sourceNotes, destinationNotes, action.payload.auth.tokenId]
         })
 
         return updateColumnsCmd;
@@ -107,7 +107,7 @@ export default function columnsReducer(state = initialState, action:any) {
         immutableState = immutableState.setIn(['byId', startColumn.get('columnId'), 'noteIds'], newList);
 
         const updateColumnsCmd = Cmd.run(updateColumns, {
-            args: [source.droppableId, destination.droppableId, newList, null, action.payload.auth.user]
+            args: [source.droppableId, destination.droppableId, newList, null, action.payload.auth.tokenId]
         })
 
         return updateColumnsCmd;

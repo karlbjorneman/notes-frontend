@@ -66,39 +66,43 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
     }
 
     public async componentDidMount () {
-        const account = {
-            name: 'gustaftechnotes',
-            sas:  '?sv=2018-03-28&sr=c&sig=Y8QjXeF79V5DxS%2BJPHU6SZgKLAWUENHRjdp2pXfbkcQ%3D&se=2019-05-23T13%3A39%3A08Z&sp=rwl'
-        };
 
-        const anonymousCredential = new AzureStorage.AnonymousCredential();
+      
+
+
+        // const account = {
+        //     name: 'gustaftechnotes',
+        //     sas:  '?sv=2018-03-28&sr=c&sig=Y8QjXeF79V5DxS%2BJPHU6SZgKLAWUENHRjdp2pXfbkcQ%3D&se=2019-05-23T13%3A39%3A08Z&sp=rwl'
+        // };
+
+        // const anonymousCredential = new AzureStorage.AnonymousCredential();
  
-        // Use sharedKeyCredential, tokenCredential or anonymousCredential to create a pipeline
-        const pipeline = AzureStorage.StorageURL.newPipeline(anonymousCredential);
+        // // Use sharedKeyCredential, tokenCredential or anonymousCredential to create a pipeline
+        // const pipeline = AzureStorage.StorageURL.newPipeline(anonymousCredential);
 
-        const serviceURL = new AzureStorage.ServiceURL(
-            // When using AnonymousCredential, following url should include a valid SAS or support public access
-            `https://${account.name}.blob.core.windows.net` + account.sas,
-            pipeline
-          );
+        // const serviceURL = new AzureStorage.ServiceURL(
+        //     // When using AnonymousCredential, following url should include a valid SAS or support public access
+        //     `https://${account.name}.blob.core.windows.net` + account.sas,
+        //     pipeline
+        //   );
 
-          const containerURL = AzureStorage.ContainerURL.fromServiceURL(serviceURL, 'gustafechnotesblobstorage');
-          let marker = undefined;
-          do  {
-            const listBlobsResponse:AzureStorage.Models.ContainerListBlobFlatSegmentResponse = await containerURL.listBlobFlatSegment(
-              AzureStorage.Aborter.none,
-              marker
-            );
+        //   const containerURL = AzureStorage.ContainerURL.fromServiceURL(serviceURL, 'gustafechnotesblobstorage');
+        //   let marker = undefined;
+        //   do  {
+        //     const listBlobsResponse:AzureStorage.Models.ContainerListBlobFlatSegmentResponse = await containerURL.listBlobFlatSegment(
+        //       AzureStorage.Aborter.none,
+        //       marker
+        //     );
          
-            marker = listBlobsResponse.nextMarker;
-            for (const blob of listBlobsResponse.segment.blobItems) {
-              const blobUrl = AzureStorage.BlobURL.fromContainerURL(containerURL, blob.name);
-              this.setState({
-                ...this.state,
-                imageUrl: blobUrl.url
-              })
-            }
-          } while (marker);         
+        //     marker = listBlobsResponse.nextMarker;
+        //     for (const blob of listBlobsResponse.segment.blobItems) {
+        //       const blobUrl = AzureStorage.BlobURL.fromContainerURL(containerURL, blob.name);
+        //       this.setState({
+        //         ...this.state,
+        //         imageUrl: blobUrl.url
+        //       })
+        //     }
+        //   } while (marker);         
     }
 
     public render() {
@@ -147,7 +151,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
     }
 
     private handleSubmit(event: any) {
-        updatenote(this.state, this.props.auth.user);
+        updatenote(this.state, this.props.auth.session);
         event.preventDefault();
       }
 }
