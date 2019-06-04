@@ -14,10 +14,32 @@ export function updatenote(state: any, tokenId:any) {
     });
 }
 
-export function addNoteDispatched(header:string, body:string) {
+
+export function addNoteImageDispatched(header: string, body:string, image: any) {
     return (dispatch:any, getState:any) => {
         const currentState = getState();
-        addNote(header, body, currentState.auth.tokenId)
+     
+        let form = new FormData();
+        form.append('header', header);
+        form.append('body', body);
+        form.append('accessToken', currentState.auth.googleAccessToken)
+        if (image) {
+            form.append('file', image);
+        }
+
+        fetch(process.env.REACT_APP_BASEURL + '/api/notes/', {
+            body: form,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                //'Content-Type': 'application/json;charset=UTF-8',
+                'Authorization': 'Bearer ' + currentState.auth.tokenId
+            },       
+            method: 'POST',
+            mode: 'cors'
+        })
+        .then((data:any) => {
+            return data.json();
+        })
         .then((data:any) => {
             const notes = data;
             dispatch(addNoteSuccess(notes));
@@ -25,27 +47,8 @@ export function addNoteDispatched(header:string, body:string) {
           })
           .catch((error:any) => {
             //dispatch(addNotesFailure(error.message))
-        })
+        });
     }
-}
-
-function addNote(header: string, body: string, tokenId:any) {
-    return fetch(process.env.REACT_APP_BASEURL + '/api/notes/', {
-        body: JSON.stringify({
-                Header: header,
-                Body: body
-        }),
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json;charset=UTF-8',
-            'Authorization': 'Bearer ' + tokenId
-        },       
-        method: 'POST',
-        mode: 'cors'
-    })
-    .then((data:any) => {
-        return data.json();
-    });
 }
 
 export function getAllNotesDispatched() {

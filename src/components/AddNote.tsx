@@ -1,10 +1,9 @@
 import { withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
-import {Card, CardContent, CardMedia, InputBase} from '@material-ui/core';
+import {Card, CardContent, CardMedia, InputBase, IconButton} from '@material-ui/core';
 import AddImageIcon from '@material-ui/icons/ImageOutlined';
-import * as AzureStorage from "@azure/storage-blob";
 import { connect } from 'react-redux';
-import { addNoteDispatched } from '../services/notesService';
+import { addNoteImageDispatched } from '../services/notesService';
 
 interface IAddNoteProps {
     id?: string;
@@ -12,7 +11,8 @@ interface IAddNoteProps {
     header?: string;
     position?: {column: string}
     classes: any,
-    addNoteDispatched: any
+    addNoteImageDispatched: any,
+    auth:any
   }
   
 interface IAddNoteState {
@@ -42,7 +42,10 @@ const styles = (theme:any) => ({
     },
     addImageIcon: {
       color: theme.palette.text.primary,
-      margin: '0 0 0 13px'
+      // margin: '0 0 0 13px'
+    },
+    input: {
+      display: 'none'
     }
   });
 
@@ -61,47 +64,24 @@ class AddNote extends React.Component<IAddNoteProps, IAddNoteState> {
 
         this.handleHeaderChange = this.handleHeaderChange.bind(this);
         this.handleBodyChange = this.handleBodyChange.bind(this);
+        this.handleCapture = this.handleCapture.bind(this);
     }
 
     public async componentDidMount () {
-        const account = {
-            name: 'gustaftechnotes',
-            sas:  '?sv=2018-03-28&sr=c&sig=Y8QjXeF79V5DxS%2BJPHU6SZgKLAWUENHRjdp2pXfbkcQ%3D&se=2019-05-23T13%3A39%3A08Z&sp=rwl'
-        };
 
-        const anonymousCredential = new AzureStorage.AnonymousCredential();
- 
-        // Use sharedKeyCredential, tokenCredential or anonymousCredential to create a pipeline
-        const pipeline = AzureStorage.StorageURL.newPipeline(anonymousCredential);
-
-        const serviceURL = new AzureStorage.ServiceURL(
-            // When using AnonymousCredential, following url should include a valid SAS or support public access
-            `https://${account.name}.blob.core.windows.net` + account.sas,
-            pipeline
-          );
-
-          const containerURL = AzureStorage.ContainerURL.fromServiceURL(serviceURL, 'gustafechnotesblobstorage');
-          let marker = undefined;
-          do  {
-            const listBlobsResponse:AzureStorage.Models.ContainerListBlobFlatSegmentResponse = await containerURL.listBlobFlatSegment(
-              AzureStorage.Aborter.none,
-              marker
-            );
-         
-            marker = listBlobsResponse.nextMarker;
-            for (const blob of listBlobsResponse.segment.blobItems) {
-              const blobUrl = AzureStorage.BlobURL.fromContainerURL(containerURL, blob.name);
-              this.setState({
-                ...this.state,
-                imageUrl: blobUrl.url
-              })
-            }
-          } while (marker);         
     }
 
     public async componentWillUnmount() {
-      this.props.addNoteDispatched(this.state.header, this.state.body);
+      //this.props.addNoteImageDispatched(this.state.header, this.state.body);
     }
+
+    private handleCapture(event: any) {
+
+      const image = event.target.files[0];
+      this.props.addNoteImageDispatched(this.state.header, this.state.body, image);
+
+    }
+
 
     public render() {
       const classes = this.props.classes;
@@ -126,8 +106,18 @@ class AddNote extends React.Component<IAddNoteProps, IAddNoteState> {
                 multiline={true} 
                 onChange={this.handleBodyChange} />
             </CardContent>
-            <div className={classes.toolBar}>
-              <AddImageIcon className={classes.addImageIcon}/>
+            <div className={classes.toolBar} >
+              <input
+                    accept="image/*"
+                    className={classes.input}
+                    id="button_image"
+                    onChange={this.handleCapture}
+                    type="file"/>
+              <label htmlFor="button_image">
+                <IconButton className={classes.addImageIcon} component="span">
+                  <AddImageIcon  />
+                </IconButton>
+              </label>
             </div>
         </Card>
       )
@@ -152,8 +142,7 @@ const mapStateToProps = (state:any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  
-    addNoteDispatched : (header:string, body:string) => dispatch(addNoteDispatched(header, body)),
+    addNoteImageDispatched : (header:string, body:string, image:any) => dispatch(addNoteImageDispatched(header, body, image))
   });
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(AddNote))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(AddNote))
