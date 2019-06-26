@@ -20,7 +20,8 @@ interface IAddNoteState {
   body?: string;
   header?: string;
   position?: { column: string }
-  imageUrl: string
+  imageUrl: string,
+  image: any
 }
 
 const backgroundColor = '#37374055';
@@ -59,7 +60,8 @@ class AddNote extends React.Component<IAddNoteProps, IAddNoteState> {
       header: props.header,
       id: props.id,
       position: props.position,
-      imageUrl: "unknown"
+      imageUrl: "unknown",
+      image: null
     }
 
     this.handleHeaderChange = this.handleHeaderChange.bind(this);
@@ -72,7 +74,7 @@ class AddNote extends React.Component<IAddNoteProps, IAddNoteState> {
   }
 
   public async componentWillUnmount() {
-    this.props.addNoteImageDispatched(this.state.header, this.state.body, this.state.imageUrl);
+    this.props.addNoteImageDispatched(this.state.header, this.state.body, this.state.image);
   }
 
   public render() {
@@ -118,9 +120,11 @@ class AddNote extends React.Component<IAddNoteProps, IAddNoteState> {
   private handleCapture(event: any) {
 
     const image = event.target.files[0];
+    const imageUrl = URL.createObjectURL(event.target.files[0])
     this.setState({
       ...this.state, 
-      imageUrl: image
+      imageUrl: imageUrl,
+      image: image
     })
   }
 
