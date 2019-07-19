@@ -11,7 +11,7 @@ interface INoteItemProps {
     body?: string,
     header?: string,
     position?: {column: string},
-    imageUrl?: string,
+    imageUrl: string,
     classes: any,
     auth:any
   }
@@ -21,7 +21,7 @@ interface INoteItemState {
     body?: string;
     header?: string;
     position?: {column: string}
-    imageUrl?: string
+    //imageUrl: string
 }
 
 const backgroundColor = '#37374055';
@@ -57,7 +57,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
             header: props.header,
             id: props.id,
             position: props.position,
-            imageUrl: props.imageUrl == null ? "Unknown" : props.imageUrl
+            //imageUrl: props.imageUrl == null ? "Unknown" : props.imageUrl
         }
 
         this.handleHeaderChange = this.handleHeaderChange.bind(this);
@@ -116,7 +116,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
             <CardMedia
                 component="div"
                 className={classes.media}
-                image={this.state.imageUrl}
+                image={this.props.imageUrl}
             />
             <CardContent>
               <InputBase 
