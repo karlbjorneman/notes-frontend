@@ -58,7 +58,7 @@ class Column extends React.Component<{id: string, column: IColumn, notes: INoteR
                                                 snapshot2.isDragging,
                                                 provided2.draggableProps.style
                                             )}>                                        
-                                            <Note key={note.id} id={note.id} header={note.header} body={note.body} position={note.position}/>
+                                            <Note key={note.id} id={note.id} header={note.header} body={note.body} position={note.position} imageUrl={note.imageUrl}/>
                                         </div>
                                     )}
                                 </Draggable>

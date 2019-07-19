@@ -54,7 +54,7 @@ export function addNoteImageDispatched(header: string, body:string, image: any) 
 export function getAllNotesDispatched() {
     return (dispatch:any, getState:any) => {
         const currentState = getState();
-        getAllNotes(currentState.auth.tokenId)
+        getAllNotes(currentState.auth.tokenId, currentState.auth.googleAccessToken)
         .then((data:any) => {
             const notes = data;
             dispatch(fetchNotesSuccess(notes))
@@ -65,10 +65,11 @@ export function getAllNotesDispatched() {
     }
 }
 
-function getAllNotes(tokenId:any) {
+function getAllNotes(tokenId:any, googleAccessToken:string) {
     return fetch(process.env.REACT_APP_BASEURL + '/api/notes', {
         headers: {
-            'Authorization': 'Bearer ' + tokenId
+            'Authorization': 'Bearer ' + tokenId,
+            'googleAccessToken': googleAccessToken
         }
     })
     .then(results => {

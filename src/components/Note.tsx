@@ -7,10 +7,11 @@ import {updatenote} from '../services/notesService'
 import { connect } from 'react-redux';
 
 interface INoteItemProps {
-    id?: string;
-    body?: string;
-    header?: string;
-    position?: {column: string}
+    id?: string,
+    body?: string,
+    header?: string,
+    position?: {column: string},
+    imageUrl?: string,
     classes: any,
     auth:any
   }
@@ -20,7 +21,7 @@ interface INoteItemState {
     body?: string;
     header?: string;
     position?: {column: string}
-    imageUrl: string
+    imageUrl?: string
 }
 
 const backgroundColor = '#37374055';
@@ -56,7 +57,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
             header: props.header,
             id: props.id,
             position: props.position,
-            imageUrl: "unknown"
+            imageUrl: props.imageUrl == null ? "Unknown" : props.imageUrl
         }
 
         this.handleHeaderChange = this.handleHeaderChange.bind(this);
@@ -113,6 +114,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
       return (
         <Card className={classes.card} style={{backgroundColor: selectedColor}}>
             <CardMedia
+                component="div"
                 className={classes.media}
                 image={this.state.imageUrl}
             />
