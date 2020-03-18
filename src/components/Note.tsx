@@ -5,6 +5,7 @@ import AddImageIcon from '@material-ui/icons/ImageOutlined';
 import * as AzureStorage from "@azure/storage-blob";
 import {updatenote} from '../services/notesService'
 import { connect } from 'react-redux';
+import NoteImageContent from './NoteImageContent';
 
 interface INoteItemProps {
     id?: string,
@@ -32,10 +33,6 @@ const styles = (theme:any) => ({
     },
     header: {
         fontSize: 20
-    },
-    media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9
     },
     toolBar: {
       backgroundColor: backgroundColor,
@@ -113,11 +110,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
 
       return (
         <Card className={classes.card} style={{backgroundColor: selectedColor}}>
-            <CardMedia
-                component="div"
-                className={classes.media}
-                image={this.props.imageUrl}
-            />
+            <NoteImageContent imageUrl={this.props.imageUrl} />
             <CardContent>
               <InputBase 
                 className={classes.header} 
