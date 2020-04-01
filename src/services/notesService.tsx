@@ -1,19 +1,29 @@
-import {addNoteSuccess, fetchNotesSuccess, fetchNotesFailure} from './../actions/notesActions'
+import {addNoteSuccess, fetchNotesSuccess, fetchNotesFailure, updateNoteSuccess} from './../actions/notesActions'
 import {addNoteToColumn} from '../actions/columnsActions'
 
-export function updatenote(state: any, tokenId:any) {
-    fetch(process.env.REACT_APP_BASEURL + '/api/notes/' + state.id, {
-        body: JSON.stringify(state),
+export function updatenote(note:any, tokenId:any, googleAccessToken:string) {
+    
+    return fetch(process.env.REACT_APP_BASEURL + '/api/notes/' + note.id, {
+        body: JSON.stringify(note),
         headers: {
-            'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json;charset=UTF-8',
-            'Authorization': 'Bearer ' + tokenId
+            'Authorization': 'Bearer ' + tokenId,
+            'googleAccessToken': googleAccessToken
         },       
         method: 'PUT',
         mode: 'cors'
     });
 }
 
+export function updateNoteDispatched(note: any) {
+    return (dispatch:any, getState:any) => {
+        const currentState = getState();
+        updatenote(note, currentState.auth.tokenId, currentState.auth.googleAccessToken)
+        .then((data:any) => {
+            dispatch(updateNoteSuccess(note))
+          })
+    }
+}
 
 export function addNoteImageDispatched(header: string, body:string, image: any) {
     return (dispatch:any, getState:any) => {

@@ -3,7 +3,7 @@ import * as React from 'react';
 import {Card, CardContent, CardMedia, InputBase} from '@material-ui/core';
 import AddImageIcon from '@material-ui/icons/ImageOutlined';
 import * as AzureStorage from "@azure/storage-blob";
-import {updatenote} from '../services/notesService'
+import {updateNoteDispatched} from '../services/notesService'
 import { connect } from 'react-redux';
 import NoteImageContent from './NoteImageContent';
 
@@ -13,8 +13,10 @@ interface INoteItemProps {
     header?: string,
     position?: {column: string},
     imageUrl: string,
+    imagePath: string,
     classes: any,
-    auth:any
+    auth:any,
+    updateNoteDispatched: any,
   }
   
 interface INoteItemState {
@@ -22,7 +24,8 @@ interface INoteItemState {
     body?: string;
     header?: string;
     position?: {column: string}
-    //imageUrl: string
+    imageUrl: string,
+    imagePath: string
 }
 
 const backgroundColor = '#37374055';
@@ -54,7 +57,8 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
             header: props.header,
             id: props.id,
             position: props.position,
-            //imageUrl: props.imageUrl == null ? "Unknown" : props.imageUrl
+            imageUrl: props.imageUrl == null ? "Unknown" : props.imageUrl,
+            imagePath : props.imagePath
         }
 
         this.handleHeaderChange = this.handleHeaderChange.bind(this);
@@ -146,7 +150,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
     }
 
     private handleSubmit(event: any) {
-        updatenote(this.state, this.props.auth.session);
+        this.props.updateNoteDispatched(this.state);
         event.preventDefault();
       }
 }
@@ -155,4 +159,8 @@ const mapStateToProps = (state:any) => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(withStyles(styles)(Note))
+const mapDispatchToProps = (dispatch: any) => ({
+  updateNoteDispatched: (id:any) => dispatch(updateNoteDispatched(id))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Note))

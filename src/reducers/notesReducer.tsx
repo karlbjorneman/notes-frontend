@@ -1,7 +1,8 @@
 import {
     FETCH_NOTES_SUCCESS,
     FETCH_NOTES_FAILURE,
-    ADD_NOTE_SUCCESS
+    ADD_NOTE_SUCCESS,
+    UPDATE_NOTES_SUCCESS
   } from './../actions/notesActions';
 import {arrayToObject} from '../helpers/arrayExtensions'
 import {fromJS} from 'immutable'
@@ -12,6 +13,9 @@ import {fromJS} from 'immutable'
   }
 
   export default function notesReducer(state = initialState, action:any) {
+
+    let immutableState;
+
     switch(action.type) {
         case FETCH_NOTES_SUCCESS:
 
@@ -26,7 +30,7 @@ import {fromJS} from 'immutable'
                 error: action.payload.error
             });
         case ADD_NOTE_SUCCESS:
-            let immutableState = fromJS(state); 
+            immutableState = fromJS(state); 
 
             let allIds = immutableState.get('allIds');
             allIds = allIds.push(action.payload.note.id);
@@ -34,16 +38,15 @@ import {fromJS} from 'immutable'
             
             immutableState = immutableState.setIn(['byId', action.payload.note.id], action.payload.note);
 
-            // const addNoteCmd = Cmd.run(addnote, {
-            //     successActionCreator: addNoteSuccess,
-            //     args: [action.payload.header, action.payload.body, action.payload.auth]
-            // })
             return immutableState.toJS();            
-            // return loop(state, addNoteCmd);
-        // case ADD_NOTE_SUCCESS:
-        //     let immutableState = fromJS(state);    
 
-        //     return state;
+        case UPDATE_NOTES_SUCCESS:
+            immutableState = fromJS(state); 
+
+            let byId = immutableState.get('byId');
+            immutableState = immutableState.setIn(['byId', action.payload.note.id], action.payload.note);
+
+            return immutableState.toJS();
         default:
             return state;
     }
