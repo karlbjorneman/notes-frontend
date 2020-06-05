@@ -5,6 +5,7 @@ import AddImageIcon from '@material-ui/icons/ImageOutlined';
 import { connect } from 'react-redux';
 import { addNoteImageDispatched } from '../services/notesService';
 import NoteImageContent from './NoteImageContent';
+import NoteToolbar from './NoteToolbar';
 
 interface IAddNoteProps {
   id?: string;
@@ -38,17 +39,6 @@ const styles = (theme: any) => ({
   media: {
     height: 0,
     paddingTop: '56.25%', // 16:9
-  },
-  toolBar: {
-    backgroundColor: backgroundColor,
-    paddingTop: '4px'
-  },
-  addImageIcon: {
-    color: theme.palette.text.primary,
-    // margin: '0 0 0 13px'
-  },
-  input: {
-    display: 'none'
   }
 });
 
@@ -99,19 +89,7 @@ class AddNote extends React.Component<IAddNoteProps, IAddNoteState> {
             multiline={true}
             onChange={this.handleBodyChange} />
         </CardContent>
-        <div className={classes.toolBar} >
-          <input
-            accept="image/*"
-            className={classes.input}
-            id="button_image"
-            onChange={this.handleCapture}
-            type="file" />
-          <label htmlFor="button_image">
-            <IconButton className={classes.addImageIcon} component="span">
-              <AddImageIcon />
-            </IconButton>
-          </label>
-        </div>
+        <NoteToolbar handleCapture={this.handleCapture} />
       </Card>
     )
   }
