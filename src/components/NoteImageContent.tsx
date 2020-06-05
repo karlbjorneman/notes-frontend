@@ -6,9 +6,6 @@ interface INoteImageContentProps {
     classes: any
   }
   
-interface INoteImageContentState {
-}
-
 const styles = (theme:any) => ({
     media: {
         height: 0,
@@ -16,25 +13,21 @@ const styles = (theme:any) => ({
     }
   });
 
-class NoteImageContext extends React.Component<INoteImageContentProps, INoteImageContentState> {
-    constructor(props: INoteImageContentProps) {
-        super(props);
+
+function NoteImageContext(props: INoteImageContentProps) {
+    const classes = props.classes;
+
+    if (props.imageUrl == null) {
+        return (<div/>);
     }
 
-    public render() {
-        const classes = this.props.classes;
-
-        if (this.props.imageUrl == null) {
-            return (<div/>);
-        }
-
-        return (
-            <CardMedia
-            component="div"
-            className={classes.media}
-            image={this.props.imageUrl}/>
-        );
-    }
+    return (
+        <CardMedia
+        component="div"
+        className={classes.media}
+        image={props.imageUrl}/>
+    );
 }
+
 
 export default (withStyles(styles)(NoteImageContext))
