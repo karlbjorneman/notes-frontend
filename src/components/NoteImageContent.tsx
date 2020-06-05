@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withStyles, CardMedia } from '@material-ui/core';
 
 interface INoteImageContentProps {
-    imageUrl: string,
+    imageUrl?: string,
     classes: any
   }
   

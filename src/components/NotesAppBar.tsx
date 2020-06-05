@@ -114,7 +114,7 @@ class NotesAppBar extends React.Component<IAppBarProps, IAppBarState> {
                     onClose={this.handlePopoverClose}
                     disableRestoreFocus>
 
-                    <AddNote id={""} header={"Heading"} body={"Make a note..."} />
+                    <AddNote id={""} header={"Heading"} body={"Make a note..."} imageUrl={undefined}/>
                 </Popover>
 
                 <div>

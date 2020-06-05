@@ -4,6 +4,7 @@ import { Card, CardContent, CardMedia, InputBase, IconButton } from '@material-u
 import AddImageIcon from '@material-ui/icons/ImageOutlined';
 import { connect } from 'react-redux';
 import { addNoteImageDispatched } from '../services/notesService';
+import NoteImageContent from './NoteImageContent';
 
 interface IAddNoteProps {
   id?: string;
@@ -11,6 +12,7 @@ interface IAddNoteProps {
   header?: string;
   position?: { column: string }
   classes: any,
+  imageUrl?: string,
   addNoteImageDispatched: any,
   auth: any
 }
@@ -84,10 +86,7 @@ class AddNote extends React.Component<IAddNoteProps, IAddNoteState> {
 
     return (
       <Card className={classes.card} style={{ backgroundColor: selectedColor }}>
-        <CardMedia
-          className={classes.media}
-          image={this.state.imageUrl}
-        />
+        <NoteImageContent imageUrl={this.state.imageUrl} />
         <CardContent>
           <InputBase
             className={classes.header}
