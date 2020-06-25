@@ -58,7 +58,7 @@ class AddNote extends React.Component<IAddNoteProps, IAddNoteState> {
 
     this.handleHeaderChange = this.handleHeaderChange.bind(this);
     this.handleBodyChange = this.handleBodyChange.bind(this);
-    this.handleCapture = this.handleCapture.bind(this);
+    this.addNoteHandleCapture = this.addNoteHandleCapture.bind(this);
   }
 
   public async componentDidMount() {
@@ -89,12 +89,12 @@ class AddNote extends React.Component<IAddNoteProps, IAddNoteState> {
             multiline={true}
             onChange={this.handleBodyChange} />
         </CardContent>
-        <NoteToolbar handleCapture={this.handleCapture} />
+        <NoteToolbar handleCapture={this.addNoteHandleCapture} />
       </Card>
     )
   }
 
-  private handleCapture(event: any) {
+  private addNoteHandleCapture(event: any) {
 
     const image = event.target.files[0];
     const imageUrl = URL.createObjectURL(event.target.files[0])

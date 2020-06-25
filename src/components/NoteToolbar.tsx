@@ -1,11 +1,17 @@
 import * as React from 'react';
 import { withStyles, IconButton } from "@material-ui/core";
 import AddImageIcon from '@material-ui/icons/ImageOutlined';
+import { render } from 'react-dom';
 
 interface INoteImageContentProps {
     classes:any,
     handleCapture:any
   }
+
+  
+interface INoteImageContentState {
+
+}
 
 const backgroundColor = '#37374055';
 
@@ -23,8 +29,20 @@ const styles = (theme: any) => ({
         }
     });
 
-  function NoteToolbar(props: INoteImageContentProps) {  
-    const classes = props.classes;
+  class NoteToolbar extends React.Component<INoteImageContentProps, INoteImageContentState> {
+  
+  constructor(props: INoteImageContentProps) {
+    super(props);
+
+    this.handleCapture = this.handleCapture.bind(this);
+  }
+
+  private handleCapture(event: any) {
+    this.props.handleCapture(event);
+  }
+
+  public render(){ 
+    const classes = this.props.classes;
 
     return (
         <div className={classes.toolBar} >
@@ -32,7 +50,7 @@ const styles = (theme: any) => ({
             accept="image/*"
             className={classes.input}
             id="button_image"
-            onChange={props.handleCapture}
+            onChange={this.handleCapture}
             type="file" />
             <label htmlFor="button_image">
             <IconButton className={classes.addImageIcon} component="span">
@@ -41,5 +59,6 @@ const styles = (theme: any) => ({
             </label>
         </div>);
   }
+}
 
 export default (withStyles(styles)(NoteToolbar))

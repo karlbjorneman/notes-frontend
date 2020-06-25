@@ -6,6 +6,7 @@ import * as AzureStorage from "@azure/storage-blob";
 import {updateNoteDispatched} from '../services/notesService'
 import { connect } from 'react-redux';
 import NoteImageContent from './NoteImageContent';
+import NoteToolbar from './NoteToolbar';
 
 interface INoteItemProps {
     id?: string,
@@ -25,7 +26,8 @@ interface INoteItemState {
     header?: string;
     position?: {column: string}
     imageUrl: string,
-    imagePath: string
+    imagePath: string,
+    image: any
 }
 
 const backgroundColor = '#37374055';
@@ -58,53 +60,25 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
             id: props.id,
             position: props.position,
             imageUrl: props.imageUrl == null ? "Unknown" : props.imageUrl,
-            imagePath : props.imagePath
+            imagePath: props.imagePath,
+            image: null
         }
 
         this.handleHeaderChange = this.handleHeaderChange.bind(this);
         this.handleBodyChange = this.handleBodyChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        //this.handleCapture = this.handleCapture.bind(this);
     }
 
-    public async componentDidMount () {
+    private handleCapture(event: any) {
+      const image = event.target.files[0];
+      const imageUrl = URL.createObjectURL(event.target.files[0]);
 
-      
-
-
-        // const account = {
-        //     name: 'gustaftechnotes',
-        //     sas:  '?sv=2018-03-28&sr=c&sig=Y8QjXeF79V5DxS%2BJPHU6SZgKLAWUENHRjdp2pXfbkcQ%3D&se=2019-05-23T13%3A39%3A08Z&sp=rwl'
-        // };
-
-        // const anonymousCredential = new AzureStorage.AnonymousCredential();
- 
-        // // Use sharedKeyCredential, tokenCredential or anonymousCredential to create a pipeline
-        // const pipeline = AzureStorage.StorageURL.newPipeline(anonymousCredential);
-
-        // const serviceURL = new AzureStorage.ServiceURL(
-        //     // When using AnonymousCredential, following url should include a valid SAS or support public access
-        //     `https://${account.name}.blob.core.windows.net` + account.sas,
-        //     pipeline
-        //   );
-
-        //   const containerURL = AzureStorage.ContainerURL.fromServiceURL(serviceURL, 'gustafechnotesblobstorage');
-        //   let marker = undefined;
-        //   do  {
-        //     const listBlobsResponse:AzureStorage.Models.ContainerListBlobFlatSegmentResponse = await containerURL.listBlobFlatSegment(
-        //       AzureStorage.Aborter.none,
-        //       marker
-        //     );
-         
-        //     marker = listBlobsResponse.nextMarker;
-        //     for (const blob of listBlobsResponse.segment.blobItems) {
-        //       const blobUrl = AzureStorage.BlobURL.fromContainerURL(containerURL, blob.name);
-        //       this.setState({
-        //         ...this.state,
-        //         imageUrl: blobUrl.url
-        //       })
-        //     }
-        //   } while (marker);         
+      this.setState({
+        ...this.state,
+        imageUrl: imageUrl,
+        image: image
+      })
     }
 
     public render() {
@@ -114,7 +88,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
 
       return (
         <Card className={classes.card} style={{backgroundColor: selectedColor}}>
-            <NoteImageContent imageUrl={this.props.imageUrl} />
+            <NoteImageContent imageUrl={this.state.imageUrl} />
             <CardContent>
               <InputBase 
                 className={classes.header} 
@@ -129,9 +103,7 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
                 onChange={this.handleBodyChange} 
                 onBlur={this.handleSubmit}/>
             </CardContent>
-            <div className={classes.toolBar}>
-              <AddImageIcon className={classes.addImageIcon}/>
-            </div>
+            {/* <NoteToolbar handleCapture={(event:any) => this.handleCapture(event)} /> */}
         </Card>
       )
     }
