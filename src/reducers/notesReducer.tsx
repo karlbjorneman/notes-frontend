@@ -2,7 +2,8 @@ import {
     FETCH_NOTES_SUCCESS,
     FETCH_NOTES_FAILURE,
     ADD_NOTE_SUCCESS,
-    UPDATE_NOTES_SUCCESS
+    UPDATE_NOTES_SUCCESS,
+    UPDATE_NOTES_IMAGE_SUCCESS
   } from './../actions/notesActions';
 import {arrayToObject} from '../helpers/arrayExtensions'
 import {fromJS} from 'immutable'
@@ -42,8 +43,11 @@ import {fromJS} from 'immutable'
 
         case UPDATE_NOTES_SUCCESS:
             immutableState = fromJS(state); 
+            immutableState = immutableState.setIn(['byId', action.payload.note.id], action.payload.note);
 
-            let byId = immutableState.get('byId');
+            return immutableState.toJS();
+        case UPDATE_NOTES_IMAGE_SUCCESS:
+            immutableState = fromJS(state);
             immutableState = immutableState.setIn(['byId', action.payload.note.id], action.payload.note);
 
             return immutableState.toJS();

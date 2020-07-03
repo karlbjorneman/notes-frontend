@@ -1,9 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import * as React from 'react';
-import {Card, CardContent, CardMedia, InputBase} from '@material-ui/core';
-import AddImageIcon from '@material-ui/icons/ImageOutlined';
-import * as AzureStorage from "@azure/storage-blob";
-import {updateNoteDispatched} from '../services/notesService'
+import {Card, CardContent, InputBase} from '@material-ui/core';
+import {updateNoteDispatched, updateNoteImageDispatched} from '../services/notesService'
 import { connect } from 'react-redux';
 import NoteImageContent from './NoteImageContent';
 import NoteToolbar from './NoteToolbar';
@@ -18,6 +16,7 @@ interface INoteItemProps {
     classes: any,
     auth:any,
     updateNoteDispatched: any,
+    updateNoteImageDispatched: any
   }
   
 interface INoteItemState {
@@ -55,30 +54,14 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
         super(props);
 
         this.state = {
-            body: props.body,
-            header: props.header,
-            id: props.id,
-            position: props.position,
-            imageUrl: props.imageUrl == null ? "Unknown" : props.imageUrl,
-            imagePath: props.imagePath,
+            body: this.props.body,
+            header: this.props.header,
+            id: this.props.id,
+            position: this.props.position,
+            imageUrl: this.props.imageUrl == null ? "Unknown" : this.props.imageUrl,
+            imagePath: this.props.imagePath,
             image: null
         }
-
-        this.handleHeaderChange = this.handleHeaderChange.bind(this);
-        this.handleBodyChange = this.handleBodyChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        //this.handleCapture = this.handleCapture.bind(this);
-    }
-
-    private handleCapture(event: any) {
-      const image = event.target.files[0];
-      const imageUrl = URL.createObjectURL(event.target.files[0]);
-
-      this.setState({
-        ...this.state,
-        imageUrl: imageUrl,
-        image: image
-      })
     }
 
     public render() {
@@ -103,25 +86,40 @@ class Note extends React.Component<INoteItemProps, INoteItemState> {
                 onChange={this.handleBodyChange} 
                 onBlur={this.handleSubmit}/>
             </CardContent>
-            {/* <NoteToolbar handleCapture={(event:any) => this.handleCapture(event)} /> */}
+            <NoteToolbar id={this.props.id} imageSelectedCallback={this.imageSelectedCallback}/>
         </Card>
       )
     }
 
-    private handleBodyChange(event: any) {
+    imageSelectedCallback = (imageFile:any) => {
+      const imageUrl = URL.createObjectURL(imageFile);
+
+      let note = {
+         ...this.state,
+         image : imageFile,
+         imageUrl
+      };
+
+      this.setState(note);
+
+      this.props.updateNoteImageDispatched(note);
+    }
+
+    handleBodyChange = (event: any) => {
         this.setState({
             ...this.state,
             body: event.target.value
         });
       }
-    private handleHeaderChange(event: any) {
+
+    handleHeaderChange = (event: any) => {
         this.setState({
             ...this.state,
             header: event.target.value
         });
     }
 
-    private handleSubmit(event: any) {
+    handleSubmit = (event: any) => {
         this.props.updateNoteDispatched(this.state);
         event.preventDefault();
       }
@@ -132,7 +130,8 @@ const mapStateToProps = (state:any) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  updateNoteDispatched: (id:any) => dispatch(updateNoteDispatched(id))
+  updateNoteDispatched: (note:any) => dispatch(updateNoteDispatched(note)),
+  updateNoteImageDispatched: (note:any) => dispatch(updateNoteImageDispatched(note))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Note))

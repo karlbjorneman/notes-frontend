@@ -1,16 +1,14 @@
 import * as React from 'react';
 import { withStyles, IconButton } from "@material-ui/core";
 import AddImageIcon from '@material-ui/icons/ImageOutlined';
-import { render } from 'react-dom';
 
 interface INoteImageContentProps {
     classes:any,
-    handleCapture:any
+    id?: string,
+    imageSelectedCallback: Function
   }
-
   
 interface INoteImageContentState {
-
 }
 
 const backgroundColor = '#37374055';
@@ -31,14 +29,13 @@ const styles = (theme: any) => ({
 
   class NoteToolbar extends React.Component<INoteImageContentProps, INoteImageContentState> {
   
+    fileInput:any = undefined;
+    form:any = undefined;
+
   constructor(props: INoteImageContentProps) {
     super(props);
 
-    this.handleCapture = this.handleCapture.bind(this);
-  }
-
-  private handleCapture(event: any) {
-    this.props.handleCapture(event);
+    this.fileInput = React.createRef();
   }
 
   public render(){ 
@@ -46,18 +43,33 @@ const styles = (theme: any) => ({
 
     return (
         <div className={classes.toolBar} >
+          <form ref={ref => this.form = ref} onSubmit={this.handleCapture} >
             <input
             accept="image/*"
             className={classes.input}
-            id="button_image"
-            onChange={this.handleCapture}
+            id={"button_image" + this.props.id}
+            ref={this.fileInput}
+            onChange={this.handleInput}
             type="file" />
-            <label htmlFor="button_image">
+            <label htmlFor={"button_image" + this.props.id}>
             <IconButton className={classes.addImageIcon} component="span">
                 <AddImageIcon />
             </IconButton>
             </label>
+          </form>
         </div>);
+  }
+
+  handleInput = (e:any) => {
+    e.preventDefault();
+
+    this.form.dispatchEvent(new Event('submit'));
+  }
+
+  handleCapture = (event: any) => {
+    event.preventDefault();
+
+    this.props.imageSelectedCallback(this.fileInput.current.files[0]);
   }
 }
 
